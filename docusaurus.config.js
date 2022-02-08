@@ -112,6 +112,8 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
+      // 开启可隐藏sidebar 专注于文档阅读
+      hideableSidebar: true,
     }),
 };
 

@@ -1,8 +1,8 @@
 ---
-sidebar_position: 101
+sidebar_position: 0
 ---
 
-# 简历markdown页面
+# 简历页面（准备）
 
 Let's discover **Docusaurus in less than 5 minutes**.
 
