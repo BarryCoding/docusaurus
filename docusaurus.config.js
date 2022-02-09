@@ -6,8 +6,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: '前端面试',
-  tagline: 'Dinosaurs are cool',
+  title: '学习文档',
+  tagline: '无需后端支撑，纯前端文档项目',
   url: 'https://BarryCoding.github.io/',
   baseUrl: '/docusaurus/',
   onBrokenLinks: 'throw',
@@ -43,7 +43,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: '前端面试',
+        title: '首页',
         logo: {
           alt: 'My Site Logo',
           src: 'img/logo.svg',
@@ -53,12 +53,12 @@ const config = {
             type: 'doc',
             docId: 'intro',
             position: 'left',
-            label: '我的笔记',
+            label: '我的文档',
           },
           {to: '/blog', label: 'Blog', position: 'left'},
           {
-            href: 'https://github.com/facebook/docusaurus',
-            label: 'GitHub',
+            href: 'https://github.com/BarryCoding',
+            label: '我的GitHub',
             position: 'right',
           },
         ],
@@ -70,7 +70,7 @@ const config = {
             title: 'Docs',
             items: [
               {
-                label: '我的笔记',
+                label: '我的简历',
                 to: '/docs/intro',
               },
             ],
@@ -101,12 +101,12 @@ const config = {
               },
               {
                 label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
+                href: 'https://github.com/BarryCoding',
               },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Springer很帅, Inc. Built with Docusaurus.`,
       },
       prism: {
         theme: lightCodeTheme,
