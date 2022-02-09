@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: '学习文档',
+  title: '文档项目',
   tagline: '无需后端支撑，纯前端文档项目',
   url: 'https://BarryCoding.github.io/',
   baseUrl: '/docusaurus/',
@@ -43,6 +43,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
+        hideOnScroll: true, // 自动隐藏和显示 导航
         title: '首页',
         logo: {
           alt: 'My Site Logo',
@@ -53,12 +54,13 @@ const config = {
             type: 'doc',
             docId: 'intro',
             position: 'left',
-            label: '我的文档',
+            label: '文档',
           },
           {to: '/blog', label: 'Blog', position: 'left'},
           {
             href: 'https://github.com/BarryCoding',
-            label: '我的GitHub',
+            className: 'header-github-link',
+            'aria-label': 'GitHub repository',
             position: 'right',
           },
         ],

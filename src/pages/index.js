@@ -29,7 +29,7 @@ export default function Home() {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`首页 ${siteConfig.title}`}
+      title={`首页`}
       description="个人文档项目 <head />">
       <HomepageHeader />
       <main>

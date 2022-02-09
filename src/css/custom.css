@@ -26,3 +26,12 @@
 html[data-theme='dark'] .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.3);
 }
+
+/* 导航栏 github 小图标 */
+.header-github-link:before {
+  background-image: url(../../static/img/svg/github.svg);
+  content: "";
+  display: flex;
+  height: 24px;
+  width: 24px;
+}
