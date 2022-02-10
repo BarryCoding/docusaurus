@@ -3,7 +3,7 @@ sidebar_position: 1
 ---
 
 # 基本配置
-## 拆分配置 merge
+:::note 
 ```js title='项目结构'
 ├── build-base-config
 │   ├── paths.js
@@ -17,6 +17,8 @@ sidebar_position: 1
 ├── package.json
 └── postcss.config.js
 ```
+:::
+## 拆分配置 merge
 :::tip webpack4 配置文件夹
 - 路径工具
 ```js title='paths.js'
@@ -92,29 +94,10 @@ module.exports = smart(webpackCommonConf, {
         // publicPath: 'http://cdn.abc.com'  // 修改所有静态文件 url 的前缀（如 cdn 域名），这里暂时用不到
     },
     module: {
-        rules: [
-            // 图片优化
-            {
-                test: /\.(png|jpg|jpeg|gif)$/,
-                use: {
-                    loader: 'url-loader',
-                    options: {
-                        // 小于 5kb 的图片用 base64 格式产出
-                        // 否则，依然延用 file-loader 的形式，产出 url 格式
-                        limit: 5 * 1024,
-
-                        // 打包到 img 目录下
-                        outputPath: '/img1/',
-
-                        // 设置图片的 cdn 地址（也可以统一在外面的 output 中设置，那将作用于所有静态资源）
-                        // publicPath: 'http://cdn.abc.com'
-                    }
-                }
-            },
-        ]
+        rules: []
     },
     plugins: [
-        new CleanWebpackPlugin(), // 会默认清空 output.path 文件夹
+        new CleanWebpackPlugin(), // 会默认清空 output.path 即配置的打包文件夹
         new webpack.DefinePlugin({
             // window.ENV = 'production'
             ENV: JSON.stringify('production')
@@ -141,6 +124,7 @@ module.exports = smart(webpackCommonConf, {
 }
 ```
 :::
+
 ## 启动本地服务
 :::info 开发环境配置
 - 修改 开发配置
