@@ -3,7 +3,7 @@ sidebar_position: 3
 ---
 
 # 性能优化
-## 优化 开发环境构建速度
+## 优化 **开发环境**构建速度
 
 ### babel-loader
 :::tip 优化 babel-loader
@@ -195,21 +195,96 @@ module.exports = {
 - DllReferencePlugin 引用dll文件
 :::
 
-## 优化 生产环境产出代码
-
-### 生产模式
-
-### 小图片 base64 编码
+## 优化 **生产环境**产出代码
+> 体积更小 合理分包 速度更快
 
 ### bundle + hash
+```js title='webpack.prod.js' {3,4}
+module.exports = smart(webpackCommonConf, {
+    output: {
+        // 打包代码时，加上 hash 戳 用于协商缓存
+        filename: 'bundle.[contentHash:8].js',  
+    },
+})
+```
 
 ### CDN
+- 将所有的静态文件丢到cdn
+```js title='webpack.prod.js' {3,14-16}
+module.exports = smart(webpackCommonConf, {
+    output: {
+        publicPath: 'http://cdn.abc.com'  // + 修改所有静态文件 url 的前缀（如 cdn 域名）
+    },
+    module: {
+        rules: [
+            {
+                test: /\.(png|jpg|jpeg|gif)$/,
+                use: {
+                    loader: 'url-loader',
+                    options: {
+                        limit: 5 * 1024,
+                        outputPath: '/img1/',
+                        // 设置图片的 cdn 地址
+                        // 也可以统一在外面的 output 中设置，那将作用于所有静态资源
+                        publicPath: 'http://cdn.abc.com'
+                    }
+                }
+            },
+        ]
+    },
+})
+```
 
-### 提取公共代码
+### 小图片 base64编码 [跳转](./basic.md#base64)
+- 减少网络请求
 
-### 懒加载
+### 提取公共代码 [跳转](./advanced.md#splitChunks)
+- 减少代码体积
+
+### 懒加载 [跳转](./advanced.md#lazy)
+- 首页加载速度提升
+
+### 生产模式 
+:::tip webpack4生产模式自动配置
+- `mode:'production'` 
+- 自动启动 代码压缩
+- Vue React 会自动删除调试代码
+- 自动启动 Tree-Shaking 
+  - 代码体积更小 自动忽略未使用的代码
+  - 必须使用ES6 模块化语法才有效
+:::
+
+:::danger ES6 Module / Commonjs 区别
+- ES6 Module 是**静态引入** 编译时引入
+  - import 必须放在代码最上方
+- Commonjs 是**动态引入** 执行时引入
+  - 可在逻辑代码中动态使用
+- 只有 ES6 Module 才能静态分析 实现 Tree-Shaking
+:::
 
 ### scope hosting
+:::tip 原理 作用域托管
+- 代码体积更小
+- 函数合并 作用域合并
+- 代码可读性更高
+:::
+
+:::danger
+- 修改 生产配置
+```js title='webpack.prod.js'
+const ModuleConcatenationPlugin = require('webpack/lib/optimize/ModuleConcatenationPlugin') // 引入
+module.exports = {
+    resolve: {
+        // 三方模块 优先采用'jsnext:main'中指向的 ES6模块化语法文件
+        mainFields: ['jsnext:main', 'browser', 'main']
+    }
+    plugins: [
+        // h开启 Scope Hosting
+        new ModuleConcatenationPlugin(),
+    ],
+}
+```
+:::
 
 ## 构建流程概述
 

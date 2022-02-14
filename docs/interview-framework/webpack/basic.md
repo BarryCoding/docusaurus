@@ -248,7 +248,7 @@ module.exports = {
 ```
 :::
 
-## 解析图片
+## 解析图片 {#base64}
 :::info 开发环境配置
 - 关联 依赖
 ```json title='package.json'
