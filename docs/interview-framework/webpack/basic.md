@@ -3,8 +3,8 @@ sidebar_position: 1
 ---
 
 # 基本配置
-:::note 
-```js title='项目结构'
+:::tip 文件结构
+```js
 ├── build-base-config
 │   ├── paths.js
 │   ├── webpack.common.js
@@ -20,6 +20,24 @@ sidebar_position: 1
 :::
 ## 拆分配置 merge
 :::tip webpack4 配置文件夹
+- 项目脚本与依赖
+```json title='package.json'
+{
+  "scripts": {
+    "devBuild": "webpack --config build-base-config/webpack.dev.js",
+    "dev": "webpack-dev-server --config build-base-config/webpack.dev.js",
+    "build": "webpack --config build-base-config/webpack.prod.js"
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "^3.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0",
+    "webpack-merge": "^4.2.2"
+  }
+}
+```
 - 路径工具
 ```js title='paths.js'
 const path = require('path')
@@ -105,28 +123,21 @@ module.exports = smart(webpackCommonConf, {
     ]
 })
 ```
-- 项目脚本与依赖
-```json title='package.json'
-{
-  "scripts": {
-    "devBuild": "webpack --config build-base-config/webpack.dev.js",
-    "dev": "webpack-dev-server --config build-base-config/webpack.dev.js",
-    "build": "webpack --config build-base-config/webpack.prod.js"
-  },
-  "devDependencies": {
-    "clean-webpack-plugin": "^3.0.0",
-    "html-webpack-plugin": "^3.2.0",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.9.0",
-    "webpack-merge": "^4.2.2"
-  }
-}
-```
 :::
 
 ## 启动本地服务
 :::info 开发环境配置
+- 关联 脚本和依赖
+```json title='package.json'
+{
+  "scripts": {
+    "dev": "webpack-dev-server --config build-base-config/webpack.dev.js"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "^3.9.0"
+  }
+}
+```
 - 修改 开发配置
 ```js title='webpack.dev.js'
 module.exports = smart(webpackCommonConf, {
@@ -154,21 +165,20 @@ module.exports = smart(webpackCommonConf, {
     }
 })
 ```
-- 关联 脚本和依赖
-```json title='package.json'
-{
-  "scripts": {
-    "dev": "webpack-dev-server --config build-base-config/webpack.dev.js"
-  },
-  "devDependencies": {
-    "webpack-dev-server": "^3.9.0"
-  }
-}
-```
 :::
 
 ## 解析ES6
-:::info 公共环境配置
+:::tip 公共环境配置
+- 关联 依赖
+```json title='package.json'
+{
+  "devDependencies": {
+    "@babel/core": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "babel-loader": "^8.0.6"
+  }
+}
+```
 - 修改 公共配置
 ```js title='webpack.common.js'
 module.exports = {
@@ -185,16 +195,6 @@ module.exports = {
     },
 }
 ```
-- 关联 依赖
-```json title='package.json'
-{
-  "devDependencies": {
-    "@babel/core": "^7.7.4",
-    "@babel/preset-env": "^7.7.4",
-    "babel-loader": "^8.0.6"
-  }
-}
-```
 - 新增 babel 配置文件
 ```json title='.babelrc'
 {
@@ -205,7 +205,20 @@ module.exports = {
 :::
 
 ## 解析样式
-:::info 公共环境配置
+:::tip 公共环境配置
+- 关联 依赖
+```json title='package.json'
+{
+  "devDependencies": {
+    "style-loader": "^1.0.1",
+    "css-loader": "^3.2.1",
+    "autoprefixer": "^9.7.3",
+    "postcss-loader": "^3.0.0",
+    "less": "^3.10.3",
+    "less-loader": "^5.0.0",
+  }
+}
+```
 - 修改 公共配置
 ```js title='webpack.common.js'
 module.exports = {
@@ -227,19 +240,6 @@ module.exports = {
     },
 }
 ```
-- 关联 依赖
-```json title='package.json'
-{
-  "devDependencies": {
-    "style-loader": "^1.0.1",
-    "css-loader": "^3.2.1",
-    "autoprefixer": "^9.7.3",
-    "postcss-loader": "^3.0.0",
-    "less": "^3.10.3",
-    "less-loader": "^5.0.0",
-  }
-}
-```
 - 新增 postcss.config.js 配置文件
 ```js title='postcss.config.js'
 module.exports = {
@@ -250,6 +250,14 @@ module.exports = {
 
 ## 解析图片
 :::info 开发环境配置
+- 关联 依赖
+```json title='package.json'
+{
+  "devDependencies": {
+    "file-loader": "^5.0.2"
+  }
+}
+```
 - 修改 开发配置
 ```js title='webpack.dev.js'
 module.exports = {
@@ -264,16 +272,17 @@ module.exports = {
     },
 }
 ```
+:::
+:::danger 生产环境配置
 - 关联 依赖
 ```json title='package.json'
 {
   "devDependencies": {
+    "url-loader": "^3.0.0",
     "file-loader": "^5.0.2"
   }
 }
 ```
-:::
-:::danger 生产环境配置
 - 修改 生产配置
 ```js title='webpack.prod.js'
 module.exports = {
@@ -301,18 +310,9 @@ module.exports = {
     },
 }
 ```
-- 关联 依赖
-```json title='package.json'
-{
-  "devDependencies": {
-    "url-loader": "^3.0.0",
-    "file-loader": "^5.0.2"
-  }
-}
-```
 :::
 
-## webpack5
+## webpack5 配置
 :::caution 升级 webpack5
 - package.json dev-server 命令改了 `"dev": "webpack serve",`
 - 插件调整 `const { merge } = require('webpack-merge')`

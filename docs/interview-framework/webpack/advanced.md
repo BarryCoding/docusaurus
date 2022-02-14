@@ -13,7 +13,7 @@ sidebar_position: 2
 +   │   └── other.html
 ```
 :::
-:::info 公共环境配置
+:::tip 公共环境配置
 - 修改 公共开发配置
 ```js title='webpack.common.js'
 module.exports = {
@@ -49,20 +49,11 @@ module.exports = {
     },
 }
 ```
-- 关联 依赖
-```json title='package.json'
-{
-  "devDependencies": {
-    "url-loader": "^3.0.0",
-    "file-loader": "^5.0.2"
-  }
-}
-```
 :::
 
 ## 抽离和压缩 css
 :::caution 生产环境不合理
-之前的配置是把css 放在html head style标签中
+之前的配置是把css 插入到html head style标签中
 :::
 :::info 开发环境配置
 - 修改 将公共配置 剪切到 开发配置 
@@ -85,6 +76,16 @@ module.exports = {
 ```
 :::
 :::danger 生产环境配置
+- 关联 依赖
+```json title='package.json'
+{
+  "devDependencies": {
+    "mini-css-extract-plugin": "^0.8.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "terser-webpack-plugin": "^2.2.2",
+  }
+}
+```
 - 修改 生产配置
 ```js title='webpack.prod.js'
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') // css抽离
@@ -124,23 +125,13 @@ module.exports = {
     }
 }
 ```
-- 关联 依赖
-```json title='package.json'
-{
-  "devDependencies": {
-    "mini-css-extract-plugin": "^0.8.0",
-    "optimize-css-assets-webpack-plugin": "^5.0.3",
-    "terser-webpack-plugin": "^2.2.2",
-  }
-}
-```
 :::
 
 ## 抽离公共代码
 :::caution 生产环境不合理
 公共代码 被多次引用 并不断被打包 效率低下
 :::
-:::info 公共环境配置
+:::tip 公共环境配置
 ```js title='webpack.common.js'
 module.exports = {
     plugins: [
