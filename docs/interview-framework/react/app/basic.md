@@ -2,9 +2,10 @@
 sidebar_position: 1
 ---
 
-# React 基本
+# 基础语法
 
-## JSX语法
+## JSX语法 {#syntax}
+- [对比vue](../../vue/app/basic.md#syntax)
 ```jsx title='JSXBaseDemo.js'
 import React from "react";
 import List from "./ListDemo"; // 7 引入组件
@@ -25,7 +26,7 @@ class JSXBaseDemo extends React.Component {
     // 2 表达式 
     const exprElem = <p>{this.state.flag ? 'yes' : 'no'}</p>
 
-    // 3 子元素属性
+    // 3 标签动态属性
     const imgElem = <div>
         <p>我的头像</p>
         <img src="xxxx.png"/>

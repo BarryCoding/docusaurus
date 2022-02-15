@@ -2,5 +2,5 @@
 sidebar_position: 2
 ---
 
-# 虚拟 DOM
+# 原理
 

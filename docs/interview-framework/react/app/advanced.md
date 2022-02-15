@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# React 高级
+# 高级特性
 
 ## 函数组件
 

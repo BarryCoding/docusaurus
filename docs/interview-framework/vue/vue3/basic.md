@@ -2,5 +2,5 @@
 sidebar_position: 1
 ---
 
-# 响应式
+# 新功能
 
