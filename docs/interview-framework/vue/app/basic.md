@@ -226,6 +226,84 @@ export default {
 ```
 :::
 ## 事件
+:::caution 注意
+- event参数 自定义参数$event
+- 事件被绑定到哪里 [对比react](#)
+- 事件修饰符 按键修饰符
+:::
+:::tip 事件绑定
+```html
+<template>
+  <div>
+    <p>{{ num }}</p>
+    <button @click="increment1">+1</button>
+    <button @click="increment2(2, $event)">+2</button>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {num: 0,};
+  },
+  methods: {
+    // 事件函数调用不带参数 则默认参数是event
+    increment1(event) {
+      // 1 event是原生的 event 对象
+      console.log("event", event, event.__proto__.constructor); 
+      // 事件对象
+      console.log(event.target);
+      // 2 事件是被注册到当前元素的，和 React 不一样
+      console.log(event.currentTarget); 
+      this.num++;
+
+      // 2. 事件被挂载到当前元素
+      // 和 DOM 事件一样
+    },
+    // 事件函数调用带参数 需手动传 $event
+    increment2(val, event) {
+      console.log(event.target);
+      this.num = this.num + val;
+    },
+    loadHandler() {
+      // do some thing
+    },
+  },
+  mounted() {
+    window.addEventListener("load", this.loadHandler);
+  },
+  beforeDestroy() {
+    //【注意】用 vue 绑定的事件，组建销毁时会自动被解绑
+    // 自己绑定的事件，需要自己销毁！！！
+    window.removeEventListener("load", this.loadHandler);
+  },
+};
+</script>
+```
+:::
+
+:::danger 事件修饰符
+- 阻止单击事件传播 `stop`
+  - `v-on:click.stop='myClick'`
+- 防止提交默认事件 `prevent`
+  - `v-on:submit.prevent='mySubmit'`
+- 串联多个修饰符 
+  - `v-on:click.stop.prevent='myClick'`
+- 只有修饰符？
+  - `v-on:click.stop='fn'`
+- 默认冒泡模式 变 捕获模式 事件触发 由外而内 `capture`
+  - `v-on:click.capture='myClick'`
+- 事件必须是自身触发 非内部元素冒泡触发 `self`
+  - `v-on:click.self='myClick'`
+:::
+:::danger 按键修饰符
+- ctrl按钮触发 可和其它按钮一起按 `ctrl` 
+  - `@click.ctrl='myClick'`
+- 只有ctrl按钮触发 `exact`
+  - `@click.ctrl.exact='myClick'`
+- 只有点击才触发 不含其它按键 `exact`
+  - `@click.exact='myClick'`
+:::
 
 ## 表单
 
