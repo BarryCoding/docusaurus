@@ -25,7 +25,7 @@ module.exports = {
 :::
 
 ### IgnorePlugin
-:::caution 引入多余模块
+:::caution 引入多余未使用代码
 - import moment from 'moment'
 - moment 支撑多语言 默认引入所有语言
 - 如何只引入中文/英文
@@ -57,7 +57,7 @@ moment.locale('zh-cn') // 设置语言
 
 ### noParse
 :::tip 公共环境配置
-- 忽略单个文件库 如xx.min.js库文件已经到包好了
+- 忽略单个文件库 如xx.min.js库文件已经打包压缩好了
 ```js title='webpack.common.js'
 module.exports = {
   module: {
