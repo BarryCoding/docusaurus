@@ -229,7 +229,7 @@ export default EventDemo;
 ![difference](/img/react/react_17_event_delegation.png)
 :::
 
-# 表单
+## 表单
 :::caution 注意
 - 受控组件
 - input textarea select 用 value
@@ -279,21 +279,11 @@ class FormDemo extends React.Component {
         <p>{this.state.gender}</p>
     </div>
   }
-  onInputChange = (e) => {
-    this.setState({ name: e.target.value, });
-  };
-  onTextareaChange = (e) => {
-    this.setState({ info: e.target.value, });
-  };
-  onSelectChange = (e) => {
-    this.setState({ city: e.target.value, });
-  };
-  onCheckboxChange = () => {
-    this.setState({ flag: !this.state.flag, });
-  };
-  onRadioChange = (e) => {
-    this.setState({ gender: e.target.value, });
-  };
+  onInputChange = (e) => {this.setState({ name: e.target.value, });};
+  onTextareaChange = (e) => {this.setState({ info: e.target.value, });};
+  onSelectChange = (e) => { this.setState({ city: e.target.value, });};
+  onCheckboxChange = () => { this.setState({ flag: !this.state.flag, });};
+  onRadioChange = (e) => {this.setState({ gender: e.target.value, });};
 }
 
 export default FormDemo;
@@ -301,8 +291,221 @@ export default FormDemo;
 :::
 
 ## 组件和props
+:::caution 注意
+- props 传递数据
+- props 传递函数
+- props 类型检查 prop-types
+:::
+:::tip 父子组件通讯
+```js
+import React from "react";
+import PropTypes from "prop-types"; // 安装类型检查
 
-## state / setState
+class TodoListDemo extends React.Component {
+  constructor(props) {
+    super(props);
+    // 状态（数据）提升 数据和控制数据的函数都放在父组件
+    this.state = {
+      list: [
+        {id: "id-1",title: "标题1",},
+        {id: "id-2",title: "标题2",},
+        {id: "id-3",title: "标题3",},
+      ],
+      footerInfo: "底部文字",
+    };
+  }
+  render() {
+    return (
+      <div>
+        <Input submitTitle={this.onSubmitTitle} />
+        <List list={this.state.list} />
+        <Footer text={this.state.footerInfo} length={this.state.list.length} />
+      </div>
+    );
+  }
+  onSubmitTitle = (title) => {
+    this.setState({list: this.state.list.concat({id: `id-${Date.now()}`,title,}),});
+  };
+}
+export default TodoListDemo;
+
+class Input extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {title: ""};
+  }
+  render() {
+    return (
+      <div>
+        <input value={this.state.title} onChange={this.onTitleChange} />
+        <button onClick={this.onSubmit}>提交</button>
+      </div>
+    );
+  }
+  onTitleChange = (e) => {this.setState({title: e.target.value,});};
+  onSubmit = () => {
+    const { submitTitle } = this.props; // 获取父组件函数
+    submitTitle(this.state.title); // 调用父组件函数
+    this.setState({title: ""});
+  };
+}
+// props 类型检查
+Input.propTypes = {
+  submitTitle: PropTypes.func.isRequired,
+};
+
+class List extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    const { list } = this.props; // 获取父组件属性
+    return (
+      <ul>
+        {list.map((item, index) => (<li key={item.id}><span>{item.title}</span></li>}
+      </ul>
+    );
+  }
+}
+// props 类型检查
+List.propTypes = {
+  list: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
+
+class Footer extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <p>
+        {this.props.text} {this.props.length}
+      </p>
+    );
+  }
+  componentDidUpdate() {
+    console.log("footer did update");
+  }
+  shouldComponentUpdate(nextProps, nextState) {
+    if (
+      nextProps.text !== this.props.text ||
+      nextProps.length !== this.props.length
+    ) {
+      return true; // 可以渲染
+    }
+    return false; // 不重复渲染
+  }
+
+  // React 默认：父组件有更新，子组件则无条件也更新！！！
+  // 性能优化对于 React 更加重要！
+  // SCU 一定要每次都用吗？—— 需要的时候才优化
+}
+```
+:::
+
+## state / setState 最重要
+:::caution
+1. state 定义在 constructor中
+2. 原状态不可修改 immutable
+3. setState 上下文 异步/同步
+4. setState 状态 合并/不合并
+:::
+:::tip setState
+```js
+import React from "react";
+
+class StateDemo extends React.Component {
+  constructor(props) {
+    super(props);
+    // 1 state 要在构造函数中定义
+    this.state = {count: 0,};
+  }
+  render() {
+    return (
+      <div>
+        <p>{this.state.count}</p> <button onClick={this.increase}>累加</button>
+      </div>
+    );
+  }
+  increase = () => {
+    // 2 不要直接修改 state ，遵循不可变值 ----------------------------
+    // this.state.count++ // 错误
+    this.setState({count: this.state.count + 1})
+
+    // 3 setState 异步/同步 ----------------------------
+
+    this.setState({count: this.state.count + 1}, () => {
+      // 对比 Vue $nextTick - DOM
+      console.log('count by callback', this.state.count) // 回调函数中可以拿到最新的 state
+    })
+    console.log('count', this.state.count) // 异步的，拿不到最新值
+
+    // setTimeout 中 setState 是同步的
+    setTimeout(() => {
+      this.setState({count: this.state.count + 1})
+      console.log('count in setTimeout', this.state.count)
+    }, 0)
+
+    // 自己定义的 DOM 事件，setState 是同步的。再 componentDidMount 中
+
+    // 4 state 合并/不合并 setState的参数 ----------------------------
+
+    // 传入对象，会被合并/覆盖（类似 Object.assign ）。执行结果只一次 +1
+    this.setState({count: this.state.count + 1})
+    this.setState({count: this.state.count + 1})
+    this.setState({count: this.state.count + 1})
+
+    // 传入函数，不会被合并/覆盖 执行结果是 +3
+    this.setState((prevState, props) => ({count: prevState.count + 1}));
+    this.setState((prevState, props) => ({count: prevState.count + 1}));
+    this.setState((prevState, props) => ({count: prevState.count + 1}));
+  };
+
+  bodyClickHandler = () => {
+      this.setState({count: this.state.count + 1})
+      console.log('count in body event', this.state.count)
+  }
+  componentDidMount() {
+      // 3 自己定义的 DOM 事件，setState 是同步的
+      document.body.addEventListener('click', this.bodyClickHandler)
+  }
+  componentWillUnmount() {
+      // 3 及时销毁自定义 DOM 事件
+      document.body.removeEventListener('click', this.bodyClickHandler)
+      // 3 clearTimeout 销毁定时器
+  }
+}
+
+export default StateDemo;
+
+// -------------------------- 请用es6 扩展运算符 -----------------------------
+
+// 不可变值（函数式编程，纯函数） - 数组
+const list5Copy = this.state.list5.slice()
+list5Copy.splice(2, 0, 'a') // 中间插入/删除
+this.setState({
+    list1: this.state.list1.concat(100), // 追加
+    list2: [...this.state.list2, 100], // 追加
+    list3: this.state.list3.slice(0, 3), // 截取
+    list4: this.state.list4.filter(item => item > 100), // 筛选
+    list5: list5Copy // 其他操作
+})
+// 注意，不能直接对 this.state.list 进行 push pop splice 等，这样违反不可变值
+
+// 不可变值 - 对象
+this.setState({
+    obj1: Object.assign({}, this.state.obj1, {a: 100}),
+    obj2: {...this.state.obj2, a: 100}
+})
+// 注意，不能直接对 this.state.obj 进行属性设置，这样违反不可变值
+
+```
+:::
 
 ## 组件生命周期
-
+- constructor
+- render
+- componentDidMount
+- shouldComponentUpdate
+- componentDidUpdate
+- componentWillUnmount
