@@ -5,11 +5,15 @@ sidebar_position: 2
 # 周边工具
 
 ## vuex
+![vuex](/img/vue/vuex.png)
+
+- 项目设计 跳转 待处理
+
 - state
 - getters
 - action
 - mutation
-- 用于vue
+- 组件中使用
   - dispatch
   - commit
   - mapState
@@ -18,8 +22,11 @@ sidebar_position: 2
   - mapMutations
 
 ## vue-router
-- 动态路由
 - to / push
-- hash / history
-- 懒加载 + 动态组件
+- 路由模式 mode
+  1. hash 模式（默认） http://localhost:3000/#/user  
+  2. history 模式  http://localhost:3000/user 需server端支持
+- 路由配置 
+  1. 动态路由 path配置 `:id` 获取参数`$route.params.id`
+  2. 懒加载 component配置 `()=> import('./CustomCompoent')`
 

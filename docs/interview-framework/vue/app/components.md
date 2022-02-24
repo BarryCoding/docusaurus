@@ -3,12 +3,20 @@ sidebar_position: 2
 ---
 
 # Vue 组件
-:::danger 重点
+
+## 生命周期 {#lifecycle}
+:::danger 主要步骤
+1. 创建 create
+2. 挂载 mount
+3. 更新 update
+4. 销毁 destroy / unmount
+:::
+![vue-lifecycle](/img/vue/lifecycle.svg)
+
+## 组件通讯
+:::caution 组件通讯
 1. props $emit
 2. 自定义事件 `$on $off $emit`
-3. 生命周期 1创建 2挂载 3更新 4销毁
-
-![vue-lifecycle](/img/vue/lifecycle.vue.png)
 :::
 :::tip 代码
 ```js title='customEvent.js'
