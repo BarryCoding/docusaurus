@@ -99,7 +99,7 @@ export default {
 ```
 :::
 
-## slot
+## slot 插槽
 :::caution 注意
 - 基本使用
 - 作用域slot
@@ -315,6 +315,7 @@ export default {
 - 缓存组件 常见性能优化
 - 频繁切换 页面/tab 但无需重复渲染页面
 :::
+
 :::info 父组件
 ```html title='KeepAlive.vue' {7-11}
 <template>
@@ -405,5 +406,52 @@ export default {
 
 :::
 
-## mixin
+## mixin 逻辑混合
+:::caution 注意
+- 多个组件有相同逻辑 应该抽离为 mixin
+- mixin 非完美方案 会有一些问题
+  1. 变量来源不明确(mixin/组件) 不利于阅读
+  2. 使用多个mixin 可能变量冲突 
+  3. 多个组件使用多个mixin 多对多关系 复杂度高
+- Vue3 Composition API 旨在解决这些问题
+:::
+:::info 调用mixin
+```html title='MixinDemo.vue' {10,12}
+<template>
+  <div>
+    <!-- city showName 在mixin中 -->
+    <p>{{name}} {{major}} {{city}}</p>
+    <button @click="showName">显示姓名</button>
+  </div>
+</template>
 
+<script>
+import myMixin from './mixin'
+export default {
+  mixins: [myMixin], // 可以添加多个，会自动合并起来
+  data() {
+    return {name: '双越',major: 'web 前端'}
+  },
+  mounted() {
+    console.log('component mounted', this.name)
+  }
+}
+</script>
+```
+:::
+:::tip mixin文件
+```js
+export default {
+  data() {
+    return {city: "北京", };
+  },
+  methods: {
+    showName() {console.log(this.name); },
+  },
+  mounted() {
+    console.log("mixin mounted", this.name);
+  },
+};
+
+```
+:::
