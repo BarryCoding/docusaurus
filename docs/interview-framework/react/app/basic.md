@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 ---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # 基础语法
 
@@ -290,18 +292,21 @@ export default FormDemo;
 ```
 :::
 
-## 组件和props
+## 组件和props {#props}
 :::caution 注意
 - props 传递数据
 - props 传递函数
 - props 类型检查 prop-types
 :::
+
 :::tip 父子组件通讯
-```js
+<Tabs>
+  <TabItem value="todoList" label="TodoList">
+
+```jsx title="TodoListDemo.jsx"
 import React from "react";
 import PropTypes from "prop-types"; // 安装类型检查
-
-class TodoListDemo extends React.Component {
+export default class TodoListDemo extends React.Component {
   constructor(props) {
     super(props);
     // 状态（数据）提升 数据和控制数据的函数都放在父组件
@@ -309,7 +314,6 @@ class TodoListDemo extends React.Component {
       list: [
         {id: "id-1",title: "标题1",},
         {id: "id-2",title: "标题2",},
-        {id: "id-3",title: "标题3",},
       ],
       footerInfo: "底部文字",
     };
@@ -327,8 +331,12 @@ class TodoListDemo extends React.Component {
     this.setState({list: this.state.list.concat({id: `id-${Date.now()}`,title,}),});
   };
 }
-export default TodoListDemo;
+```
+  </TabItem>
+  
+  <TabItem value="input" label="Input">
 
+```js title="SCUDemo.jsx"
 class Input extends React.Component {
   constructor(props) {
     super(props);
@@ -353,7 +361,11 @@ class Input extends React.Component {
 Input.propTypes = {
   submitTitle: PropTypes.func.isRequired,
 };
+```
+  </TabItem>
+  <TabItem value="list" label="List">
 
+```jsx title='SCUDemo.jsx'
 class List extends React.Component {
   constructor(props) {
     super(props);
@@ -371,36 +383,34 @@ class List extends React.Component {
 List.propTypes = {
   list: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
+```
+  </TabItem>
+  <TabItem value="footer" label="Footer">
 
+```jsx title='SCUDemo.jsx'
 class Footer extends React.Component {
   constructor(props) {
     super(props);
   }
   render() {
-    return (
-      <p>
-        {this.props.text} {this.props.length}
-      </p>
-    );
+    return (<p>{this.props.text} {this.props.length}</p>)
   }
   componentDidUpdate() {
     console.log("footer did update");
   }
   shouldComponentUpdate(nextProps, nextState) {
-    if (
-      nextProps.text !== this.props.text ||
-      nextProps.length !== this.props.length
-    ) {
+    if (nextProps.text !== this.props.text || nextProps.length !== this.props.length) {
       return true; // 可以渲染
     }
     return false; // 不重复渲染
   }
 
-  // React 默认：父组件有更新，子组件则无条件也更新！！！
-  // 性能优化对于 React 更加重要！
-  // SCU 一定要每次都用吗？—— 需要的时候才优化
+  // Todolist更新，footer也更新！
+  // 优化 只当组件相关的props改变才触发更新
 }
 ```
+  </TabItem>
+</Tabs>
 :::
 
 ## state / setState 最重要
