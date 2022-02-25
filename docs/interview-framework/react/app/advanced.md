@@ -174,17 +174,17 @@ export default class UsePortal extends React.Component {
 :::
 
 ## context
-:::caution 上下午
+:::caution 上下文场景
 - 公共信息传递 如语言/主题色
 - props 过于繁琐
 - redux 小题大做 修改并不频繁 
 :::
 
-:::tip 同一文件中
+:::tip 上下文应用
 <Tabs>
   <TabItem value="mian" label="创建提供上下文">
 
-```jsx {2-3,11-15}
+```jsx title="ContextDemo.jsx" {2-3,11-15}
 import React from "react";
 // 1 创建 Context 填入默认值（任何一个 js 变量）
 const ThemeContext = React.createContext("light");
@@ -213,7 +213,7 @@ export default class App extends React.Component {
   
   <TabItem value="middle" label="过渡组件">
 
-```js
+```js title="ContextDemo.jsx"
 // 不必再往下传递/提供上下文Provider。
 function Toolbar(props) {
   return (
@@ -227,7 +227,7 @@ function Toolbar(props) {
   </TabItem>
   <TabItem value="class" label="类组件消费">
 
-```js {2,3,5}
+```js title="ContextDemo.jsx" {2,3,5}
 class ThemedButton extends React.Component {
   // 指定 contextType 读取当前的 theme context。
   static contextType = ThemeContext
@@ -242,7 +242,7 @@ class ThemedButton extends React.Component {
   </TabItem>
   <TabItem value="fn" label="函数组件消费">
 
-```js {3,5-7}
+```js title="ContextDemo.jsx" {3,5-7}
 function ThemeLink(props) {
   // const theme = this.context // 会报错。函数式组件没有实例，即没有 this
   // 函数式组件可以使用 Consumer
@@ -256,7 +256,41 @@ function ThemeLink(props) {
   </TabItem>
 </Tabs>
 :::
+
 ## 懒加载 异步组件
+:::note 使用
+- import() 异步组件
+- React.lazy() 懒加载
+- React.Suspense 包裹懒加载组件 加载效果
+:::
+
+:::tip
+```jsx title
+import React from "react";
+// 1 异步组件 import("path")
+// 2 使用懒加载 React.lazy()
+const ContextDemo = React.lazy(() => import("./ContextDemo"));
+
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <div>
+        <p>懒加载异步组件 且 处理加载完成前效果</p>
+        {/* 3 React.Suspense 包裹懒加载组件 */}
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <ContextDemo />
+        </React.Suspense>
+      </div>
+    );
+    // 1. 强制刷新，可看到 loading （看不到就限制一下 chrome 网速）
+    // 2. 看 network 的 js 名称 时间 顺序
+  }
+}
+```
+:::
 
 ## 性能优化
 
