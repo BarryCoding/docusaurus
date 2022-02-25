@@ -413,7 +413,7 @@ class Footer extends React.Component {
 </Tabs>
 :::
 
-## state / setState 最重要
+## state / setState 最重要 {#setState}
 :::caution
 1. state 定义在 constructor中
 2. 原状态不可修改 immutable

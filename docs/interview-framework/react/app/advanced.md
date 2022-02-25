@@ -173,7 +173,7 @@ export default class UsePortal extends React.Component {
 </Tabs>
 :::
 
-## context
+## context {#context}
 :::caution 上下文场景
 - 公共信息传递 如语言/主题色
 - props 过于繁琐
@@ -291,16 +291,3 @@ export default class App extends React.Component {
 }
 ```
 :::
-
-## 性能优化
-
-## shouldComponentUpdate
-
-## 纯组件
-
-## immutable
-
-## 高阶组件 HOC
-
-## render prop
-

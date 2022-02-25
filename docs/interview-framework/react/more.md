@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # 周边工具
 
-## redux
+## redux {#redux}
 - store 
   - 管理的数据 state关联视图渲染
 - action 

@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 ## 性能优化
 
-### shouldComponentUpdate
+### shouldComponentUpdate {#scu}
 - [一般场景](./basic.md#props)
 
 :::info 总结
