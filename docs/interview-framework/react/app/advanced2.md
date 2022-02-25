@@ -194,6 +194,12 @@ map2.get('a')
 ## 组件公共逻辑抽离
 :::caution 
 - mixin 已被 React 废弃
+- HOC 
+  - 模式简单 但增加了组件层级 可能覆盖props
+  - 作为父组件 外嵌
+- Render Props 
+  - 代码简介 不会覆盖props
+  - 作为子组件 内嵌
 :::
 
 ### 高阶组件 HOC
@@ -203,13 +209,13 @@ map2.get('a')
 :::
 :::tip 用法
 <Tabs>
-  <TabItem value="basic" label="基础">
+  <TabItem value="basic" label="基础概念">
 
 ```jsx
 import React from 'react'
 // 高阶组件是一种设计模式 工厂模式 返回一个组件/函数
 const HOCFactory = (LowComponent) => {
-  class HOC extends React.Component {
+  return class HOC extends React.Component {
     // 公共逻辑处理
     render(){
       // 穿透传递 props 且 返回加工后的组件
@@ -217,14 +223,15 @@ const HOCFactory = (LowComponent) => {
     }
   }
 }
+const HOC1 = HOCFactory(comExample)
 ```
   </TabItem>
-  <TabItem value="hoc" label="高阶鼠标组件">
+  <TabItem value="hoc" label="公共逻辑">
 
 ```jsx title='HOCDemo.jsx'
 import React from 'react'
 const withMouse = (Component) => {
-    class withMouseComponent extends React.Component {
+    return class withMouseComponent extends React.Component {
         constructor(props) {
             super(props)
             this.state = { x: 0, y: 0 } // 鼠标 x轴y轴 坐标
@@ -241,11 +248,10 @@ const withMouse = (Component) => {
             )
         }
     }
-    return withMouseComponent
 }
 ```
   </TabItem>
-  <TabItem value="apply" label="应用HOC">
+  <TabItem value="apply" label="应用">
 
 ```jsx title='HOCDemo.jsx' {9}
 const App = (props) => {
@@ -262,5 +268,78 @@ export default withMouse(App) // 返回加工后的组件
 </Tabs>
 :::
 
-### render prop
+### render props
+:::caution
+- 层级 与HOC相反 
+- 作为子组件 并控制其渲染效果
+:::
+:::tip 用法
+<Tabs>
+  <TabItem value="basic" label="基础概念">
 
+```jsx
+import React from 'react'
+// 子组件 通过 state 传递给 父纯函数组件
+class RenderProps extends React.Component {
+  constructor() {
+    this.state={
+      // 公共数据
+    }
+    // 公共逻辑处理
+    render(){
+      const upperRender = this.props.render
+      return <div>{upperRender(this.state)}</div>
+    }
+  }
+}
+// 父纯函数组件
+const App = (props)=>{
+  <RenderProps render={(childState)=><CustomComponent />}
+  />
+}
+```
+  </TabItem>
+  <TabItem value="common" label="公共逻辑">
+
+```jsx title='RenderProps.jsx'
+import React from 'react'
+import PropTypes from 'prop-types'
+class Mouse extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = { x: 0, y: 0 }
+    }
+    handleMouseMove = (event) => {
+      this.setState({x: event.clientX,y: event.clientY})
+    }
+    render() {
+      return (
+        <div style={{ height: '500px' }} onMouseMove={this.handleMouseMove}>
+            {/* 1 调用 父组件render函数 */}
+            {/* 2 将当前 state 传递给 父组件来渲染 （render 是一个函数组件） */}
+            {this.props.render(this.state)}
+        </div>
+      )
+    }
+}
+Mouse.propTypes = {
+    render: PropTypes.func.isRequired // 必须接收一个 render 属性，而且是函数
+}
+```
+  </TabItem>
+  <TabItem value="rpa" label="应用">
+
+```jsx title='RenderProps.jsx'
+export default const App = (props) => (
+    <div style={{ height: '500px' }}>
+        <Mouse render={
+            /* render 是一个函数组件 ()=> <CustomComponent> */
+            ({ x, y }) => <h1>The mouse position is ({x}, {y})</h1>
+        }/>
+    </div>
+)
+//组件如何渲染，App 说了算，通过 render prop 的方式告诉 Mouse 
+```
+  </TabItem>
+</Tabs>
+:::
