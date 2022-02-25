@@ -174,7 +174,88 @@ export default class UsePortal extends React.Component {
 :::
 
 ## context
+:::caution 上下午
+- 公共信息传递 如语言/主题色
+- props 过于繁琐
+- redux 小题大做 修改并不频繁 
+:::
 
+:::tip 同一文件中
+<Tabs>
+  <TabItem value="mian" label="创建提供上下文">
+
+```jsx {2-3,11-15}
+import React from "react";
+// 1 创建 Context 填入默认值（任何一个 js 变量）
+const ThemeContext = React.createContext("light");
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {theme: "light",};
+  }
+  render() {
+    return (
+      // 2 提供context 给其内部组件
+      <ThemeContext.Provider value={this.state.theme}>
+        <Toolbar />
+        <button onClick={this.changeTheme}>change theme</button>
+      </ThemeContext.Provider>
+    );
+  }
+  changeTheme = () => {
+    this.setState({
+      theme: this.state.theme === "light" ? "dark" : "light",
+    });
+  };
+}
+```
+  </TabItem>
+  
+  <TabItem value="middle" label="过渡组件">
+
+```js
+// 不必再往下传递/提供上下文Provider。
+function Toolbar(props) {
+  return (
+    <div>
+      <ThemedButton />
+      <ThemeLink />
+    </div>
+  );
+}
+```
+  </TabItem>
+  <TabItem value="class" label="类组件消费">
+
+```js {2,3,5}
+class ThemedButton extends React.Component {
+  // 指定 contextType 读取当前的 theme context。
+  static contextType = ThemeContext
+  render() {
+    const theme = this.context; // React 会往上找到最近的 theme Provider，然后使用它的值。
+    return (
+      <p>button's theme is {theme}</p>
+    );
+  }
+}
+```
+  </TabItem>
+  <TabItem value="fn" label="函数组件消费">
+
+```js {3,5-7}
+function ThemeLink(props) {
+  // const theme = this.context // 会报错。函数式组件没有实例，即没有 this
+  // 函数式组件可以使用 Consumer
+  return (
+    <ThemeContext.Consumer>
+      {(value) => <p>link's theme is {value}</p>}
+    </ThemeContext.Consumer>
+  );
+}
+```
+  </TabItem>
+</Tabs>
+:::
 ## 懒加载 异步组件
 
 ## 性能优化
