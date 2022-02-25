@@ -191,7 +191,76 @@ map2.get('a')
 ```
 :::
 
-## 高阶组件 HOC
+## 组件公共逻辑抽离
+:::caution 
+- mixin 已被 React 废弃
+:::
 
-## render prop
+### 高阶组件 HOC
+:::info 特点
+- High Order Component
+- 工厂模式 装饰器
+:::
+:::tip 用法
+<Tabs>
+  <TabItem value="basic" label="基础">
+
+```jsx
+import React from 'react'
+// 高阶组件是一种设计模式 工厂模式 返回一个组件/函数
+const HOCFactory = (LowComponent) => {
+  class HOC extends React.Component {
+    // 公共逻辑处理
+    render(){
+      // 穿透传递 props 且 返回加工后的组件
+      return <LowComponent {...this.props} />
+    }
+  }
+}
+```
+  </TabItem>
+  <TabItem value="hoc" label="高阶鼠标组件">
+
+```jsx title='HOCDemo.jsx'
+import React from 'react'
+const withMouse = (Component) => {
+    class withMouseComponent extends React.Component {
+        constructor(props) {
+            super(props)
+            this.state = { x: 0, y: 0 } // 鼠标 x轴y轴 坐标
+        }
+        handleMouseMove = (event) => {
+            this.setState({x: event.clientX, y: event.clientY})
+        }
+        render() {
+            return (
+                <div style={{ height: '500px' }} onMouseMove={this.handleMouseMove}>
+                    {/* 1. 穿透传递 props  2. 赋予 mouse 坐标属性 */}
+                    <Component {...this.props} mouse={this.state}/>
+                </div>
+            )
+        }
+    }
+    return withMouseComponent
+}
+```
+  </TabItem>
+  <TabItem value="apply" label="应用HOC">
+
+```jsx title='HOCDemo.jsx' {9}
+const App = (props) => {
+    const { x, y } = props.mouse // 接收高阶组件中的 mouse 属性
+    return (
+        <div style={{ height: '500px' }}>
+            <h1>The mouse position is ({x}, {y})</h1>
+        </div>
+    )
+}
+export default withMouse(App) // 返回加工后的组件
+```
+  </TabItem>
+</Tabs>
+:::
+
+### render prop
 
