@@ -8,14 +8,14 @@ import TabItem from '@theme/TabItem';
 
 ## 性能优化
 
-### shouldComponentUpdate SCU
+### shouldComponentUpdate
 - [一般场景](./basic.md#props)
 
 :::info 总结
-- React默认 父组件更新，子组件也更新
+- React默认 父组件更新 所有子组件也更新
 - SCU 默认返回 true
-- 必须配合 immutable 理念
-- 根据需求和性能 再考虑SCU
+- SCU 必须配合 immutable 理念
+- 根据需求和性能 再考虑SCU优化
 :::
 :::tip immutable 理念
 <Tabs>
@@ -104,9 +104,9 @@ class List extends React.Component {
       </ul>
     );
   }
-
   shouldComponentUpdate(nextProps, nextState) {
-    // _.isEqual 做对象或者数组的深度比较（一次性递归到底）耗费性能
+    // _.isEqual 做对象或者数组的深度比较（一次性递归到底）
+    // 一般使用浅数据比较 深层数据比较很耗费性能
     if (_.isEqual(nextProps.list, this.props.list)) {
       return false; // 相等 则无需渲染
     }
@@ -122,9 +122,74 @@ List.propTypes = {
 </Tabs>
 :::
 
-### 纯组件
+### PureComponent memo
+:::caution SCU浅比较
+- PureComponent 纯类组件 自动实现浅比较
+- memo 纯函数组件 自动实现浅比较
+- 浅比较已经适用于大部分情况 设计数据时应该
+:::
+
+:::tip 浅比较应用
+<Tabs>
+  <TabItem value="list" label="List">
+
+```jsx title='SCUDemo.jsx' {1}
+class List extends React.PureComponent {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    const { list } = this.props;
+    return (
+      <ul>
+        {list.map((item, index) => {
+          return <li key={item.id}><span>{item.title}</span></li>
+        })}
+      </ul>
+    );
+  }
+  shouldComponentUpdate() {/*自动浅比较*/}
+}
+// props 类型检查
+List.propTypes = {
+  list: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
+```
+  </TabItem>
+  
+  <TabItem value="memo" label="memo">
+
+```jsx title='memo.jsx'
+function ListFn(props) {
+  const {list} = this.props
+  return <ul>
+      {list.map((item, index) => <li key={item.id}>title {item.title}</li> )}
+    </ul>
+  );
+}
+function areEqual(prevProps, nextProps){
+  // 处理逻辑 类似SCU
+}
+export default React.memo(ListFn, areEqual)
+```
+  </TabItem>
+</Tabs>
+:::
 
 ### immutable.js
+:::caution 特点
+- 彻底 不可变值
+- 基于共享数据（非深拷贝） 速度快
+- 有 学习成本 迁移成本
+:::
+:::tip
+```js
+const map1 = Immutable.Map({a:1})
+const map2 = map1.set('a',2)
+map1.get('a')
+map2.get('a')
+```
+:::
 
 ## 高阶组件 HOC
 
