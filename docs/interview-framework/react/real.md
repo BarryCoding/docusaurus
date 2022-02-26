@@ -13,7 +13,7 @@ sidebar_position: 9
 - 原理 待处理
 
 ## context是什么 有何用途
-[跳转]
+[跳转](./app/advanced.md#context)
 
 ## shouldComponetUpdate 用途
 [性能优化](./app/advanced2.md#scu)
