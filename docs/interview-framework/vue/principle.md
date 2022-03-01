@@ -220,7 +220,100 @@ data.nums.push(4); // 监听数组
 :::
 
 ## vdom / diff算法
+:::caution 
+1. DOM 操作非常耗费性能
+2. Vue React **数据驱动视图**
+3. React 提出解决方案 vdom 
+   1. vdom 用js模拟DOM结构 
+   2. 新旧vdom对比 做最小更新 到DOM
+   3. 最小更新 就是 数据驱动视图的逻辑
+:::
+:::tip JS 模拟 DOM
+<Tabs>
+  <TabItem value="dom" label="DOM">
 
+```html
+<div id='div1' class='container'>
+  <p>vdom</p>
+  <ul style='font-size: 20px'>
+    <li>a</li>
+  </ul>
+</div>
+```
+  </TabItem>
+  <TabItem value="js" label="JS模拟">
+
+```js
+{
+  // 1 tag 标签
+  tag:'div', 
+  // 2 props 标签属性
+  props:{ className:'container',id:'div1'},
+  // 3 子vnode
+  childern:[ 
+    {tag:'p',children:'vdom'},
+    {
+      tag:'ul',
+      props:{style: 'font-size: 10px'},
+      childeren:[
+        {tag:'li',children:'a'}
+      ]
+    }
+  ]  
+}
+```
+  </TabItem>
+</Tabs>
+
+:::
+
+### snabbdom
+[github](https://github.com/snabbdom/snabbdom)
+:::info 总结
+- h 函数 用于创建vnode
+- vnode 结构 
+  - 标签元素 选择器
+  - 标签元素 属性/事件监听函数
+  - 标签元素 内部内容/子vnode
+- patch 函数
+  - `patch(emptyDOM, vnode)`
+  - `patch(vnode, newVnode)`
+
+```js
+import {init,classModule,propsModule,styleModule,eventListenersModule,h} from "snabbdom";
+// 初始化补丁函数
+const patch = init([
+  classModule, // 元素 类名模块 / makes it easy to toggle classes
+  propsModule, // 元素 属性模块 / for setting properties on DOM elements
+  styleModule, // 元素 样式模块 支持动画样式 / handles styling on elements with support for animations
+  eventListenersModule, // 元素 事件监听模块 / attaches event listeners
+]);
+const container = document.getElementById("container");
+// 创建 vnode
+const vnode = h(
+  "div#container.two.classes", 
+  { on: { click: someFn } }, 
+  [
+    h("span", { style: { fontWeight: "bold" } }, "This is bold"),
+    " and this is just normal text",
+    h("a", { props: { href: "/foo" } }, "I'll take you places!"),
+]);
+// 补丁 打到 空的DOM上 / Patch into empty DOM element – this modifies the DOM as a side effect
+patch(container, vnode);
+// 创建 新的vnode
+const newVnode = h(
+  "div#container.two.classes",
+  { on: { click: anotherEventHandler } },
+  [
+    h("span", { style: { fontWeight: "normal", fontStyle: "italic" } }, "This is now italic type"),
+    " and this is still just normal text",
+    h("a", { props: { href: "/bar" } }, "I'll take you places!"),
+  ]
+);
+// 将新vnode 打补丁到 原始vnode上 / Second `patch` invocation
+patch(vnode, newVnode); // Snabbdom efficiently updates the old view to the new state
+```
+:::
 ## 模板编译
 
 ## 组件渲染过程
