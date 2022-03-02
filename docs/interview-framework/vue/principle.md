@@ -220,6 +220,7 @@ data.nums.push(4); // 监听数组
 :::
 
 ## vdom / diff算法
+### vdom
 :::caution 
 1. DOM 操作非常耗费性能
 2. Vue React **数据驱动视图**
@@ -314,6 +315,25 @@ const newVnode = h(
 patch(vnode, newVnode); // Snabbdom efficiently updates the old view to the new state
 ```
 :::
+
+### diff算法
+:::note diff 应用
+- Vue React 体现在 v-for 中 key的作用
+- Linux / Git 的 diff命令
+:::
+
+:::info diff 算法优化
+1. 只同级比较 不跨级比较
+![same-level](/img/vue/diff1.png)
+2. 同级比较 
+   1. tag类型（selector）相同 (list中key也相同) 则为同一节点
+   1. tag类型（selector）不同 则直接删掉重建
+![same-level](/img/vue/diff2.png)
+![same-level](/img/vue/diff3.png)
+1. list中 key 不相同
+![same-level](/img/vue/diff4.png)
+:::
+
 ## 模板编译
 
 ## 组件渲染过程
