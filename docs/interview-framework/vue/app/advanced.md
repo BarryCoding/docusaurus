@@ -57,7 +57,7 @@ export default {
 ```
 :::
 
-## $nextTick & $refs ❤️
+## $nextTick & $refs ❤️ {#tick}
 :::caution 注意
 - Vue是异步渲染
 - data改变后 不会立即渲染DOM 只会获取老DOM

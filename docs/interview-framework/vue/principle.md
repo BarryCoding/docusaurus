@@ -325,18 +325,56 @@ patch(vnode, newVnode); // Snabbdom efficiently updates the old view to the new 
 :::info diff 算法优化
 1. 只同级比较 不跨级比较
 ![same-level](/img/vue/diff1.png)
-2. 同级比较 
+2. 同级中 比较类型
    1. tag类型（selector）相同 (list中key也相同) 则为同一节点
    1. tag类型（selector）不同 则直接删掉重建
 ![same-level](/img/vue/diff2.png)
 ![same-level](/img/vue/diff3.png)
-1. list中 key 不相同
+3. list中 key 不相同
 ![same-level](/img/vue/diff4.png)
 :::
 
 ## 模板编译
+:::info 
+1. 前置知识 Js with
+2. vue template compiler 将模版编译为 render函数
+   1. React 没有模版 直接render
+3. 执行render 生成 vnode 
+   1. createElement(tagType,props,childNode/content)
+:::
+
+```js title='with.js'
+const obj = {a:1}
+console.log(obj.a) // 1
+console.log(obj.b) // undefined
+
+// with 能直接 使用obj变量 
+// 打破了作用域规则 找不到属性会保存
+with(obj){
+  console.log(a) // 直接获取a变量
+  console.log(b) // 报错
+}
+```
 
 ## 组件渲染过程
+:::info 初次渲染过程
+1. 解析 template 为 render函数
+2. 触发响应式 监听data属性 getter/setter
+3. 执行render函数 生成vnode 渲染到页面
+:::
+:::tip 更新过程
+1. 修改data 触发setter 监听成功
+2. 重新执行render函数 生成newVnode
+3. newVnode vs. oldVnode 完成视图更新
+:::
+![show](/img/vue/render-process.png)
+
+### 异步渲染
+:::tip
+1. [回顾 $nextTick](./app/advanced.md#tick)
+2. 汇总data修改后 一次性更新试图
+   1. 减少了DOM操作 提高性能
+:::
 
 ## 前端路由
 
