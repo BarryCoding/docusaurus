@@ -377,4 +377,74 @@ with(obj){
 :::
 
 ## 前端路由
+```js
+// 基本概念
+const url = "http://127.0.0.1:8880/hash.html?a=100&b=200#/a/b"
+const protocol = 'http'
+const hostname = '127.0.0.1'
+const port = '8880'
+const host = '127.0.0.1:8880'
+const pathname = '/hash.html'
+const search = '?a=100&b=200'
+const hash = '#/a/b'
+```
 
+### hash 模式
+:::tip hash特点
+- hash变化 会触发页面跳转 
+  1. JS 修改 url 如 点击跳转逻辑
+  2. 手动修改 url输入框 的 hash 
+  3. 浏览器自带的 前进、后退
+- hash变化 不会刷新页面 SPA特点
+- hash不会提交到服务端 完全由前端控制
+- window.onhashstate 监听hash变化
+
+```html
+<button id="btn1">修改 hash</button>
+<script>
+  window.onhashchange = (event) => {
+    console.log("old url", event.oldURL);
+    console.log("new url", event.newURL);
+    console.log("hash:", location.hash); //当前hash
+  };
+  document.addEventListener("DOMContentLoaded", () => {
+    console.log("hash:", location.hash); // 页面初次加载，获取 hash
+  });
+  document.getElementById("btn1").addEventListener("click", () => {
+    location.href = "#/user"; // a. JS 修改 url
+  });
+</script>
+```
+:::
+
+### H5 history 模式
+:::tip H5 history 特点
+- 跳转不刷新页面
+- history.pushState 路由跳转
+- window.onpopstate 监听前进后退
+
+```html
+<button id="btn1">修改 url</button>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    console.log("load", location.pathname); // 页面初次加载，获取 path
+  });
+  // 打开一个新的路由
+  // 【注意】用 pushState 方式，浏览器不会刷新页面
+  document.getElementById("btn1").addEventListener("click", () => {
+    const state = { name: "page1" };
+    console.log("切换路由到", "page1");
+    history.pushState(state, "", "page1"); // 重要！！
+  });
+  // 监听浏览器前进、后退
+  window.onpopstate = (event) => {
+    console.log("onpopstate", event.state, location.pathname);
+  };
+  // 需要 server 端配合，可参考
+</script>
+```
+:::
+:::caution 选择
+- ToB系统 推荐hash 简单易用
+- ToC系统 考虑H5 history 需服务端配合
+:::
