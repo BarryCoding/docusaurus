@@ -4,9 +4,9 @@ sidebar_position: 3
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# 高级特性
+# 高级
 
-## 自定义 v-model
+## 自定义 v-model {#cus-v}
 :::info 父组件
 ```html title='index.vue' {4}
 <template>
@@ -99,7 +99,7 @@ export default {
 ```
 :::
 
-## slot 插槽
+## slot 插槽 {#slot}
 :::caution 注意
 - 基本使用
 - 作用域slot
@@ -282,7 +282,7 @@ export default {
 ```
 :::
 
-## 异步组件
+## 异步组件 {#async}
 :::caution 注意
 - import()
 - 按需加载 异步加载大组件/模块
@@ -310,7 +310,7 @@ export default {
 ```
 :::
 
-## keep-alive
+## keep-alive {#keep-alive}
 :::caution 注意
 - 缓存组件 常见性能优化
 - 频繁切换 页面/tab 但无需重复渲染页面
@@ -406,7 +406,7 @@ export default {
 
 :::
 
-## mixin 逻辑混合
+## mixin 逻辑混合 {#mixin}
 :::caution 注意
 - 多个组件有相同逻辑 应该抽离为 mixin
 - mixin 非完美方案 会有一些问题

@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Vue 组件
+# 组件
 
 ## 生命周期 {#lifecycle}
 :::danger 主要步骤
@@ -13,7 +13,7 @@ sidebar_position: 2
 :::
 ![vue-lifecycle](/img/vue/lifecycle.svg)
 
-## 组件通讯
+## 组件通讯 {#communication}
 :::caution 组件通讯
 1. props $emit
 2. 自定义事件 `$on $off $emit`

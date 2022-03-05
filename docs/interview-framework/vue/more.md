@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# 周边工具
+# 生态
 
 ## vuex
 ![vuex](/img/vue/vuex.png)
@@ -21,7 +21,7 @@ sidebar_position: 2
   - mapActions
   - mapMutations
 
-## vue-router
+## vue-router {#router}
 - to / push
 - 路由模式 mode
   1. hash 模式（默认） http://localhost:3000/#/user  

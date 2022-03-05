@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# 基础语法
+# 基础
 
 ## 模板语法 {#syntax}
 - [对比react](../../react/app/basic.md#syntax)
@@ -33,9 +33,9 @@ export default {
 </script>
 ```
 
-## computed / watch
+## computed / watch {#computed}
 :::caution 注意
-- computed 有缓存 data改变才重新计算
+- computed 有缓存 data改变才重新计算 提高性能
 - watch 默认为**浅监听** 可深度监听引用类型 但拿不到oldValue
 :::
 
@@ -149,8 +149,9 @@ export default {
 :::caution 注意
 - v-if 只渲染满足条件的内容
   - 一般用于一次性判断 如权限
+  - 一遍不频繁控制 因为每次都会创建和销毁 影响性能
 - v-show 内容都渲染出来 并通过`display:none`隐藏内容
-  - 一般用于多次判断 节约性能避免重复销毁和创建组件 如开关
+  - 一般用于频繁切换 节约性能避免重复销毁和创建组件 如开关
 :::
 :::tip v-if/v-show
 ```html

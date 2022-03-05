@@ -4,9 +4,9 @@ sidebar_position: 3
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Vue 原理
+# 原理
 
-## 组件化 / MVVM
+## 组件化 / MVVM {#mvvm}
 :::info 组件化基础
 - 老组件化 依赖操作DOM
 - 数据驱动视图 Vue M-V-VM
@@ -14,7 +14,7 @@ import TabItem from '@theme/TabItem';
 ![mvvm](/img/vue/vue-mvvm.png)
 :::
 
-## 响应式原理
+## 响应式原理 {#responsive}
 > 组件data改变 立即触发视图更新
 :::tip 核心原理
 <Tabs>
@@ -73,7 +73,7 @@ data.age = 21 // 触发 视图已更新
 :::
 
 ### 深度监听 对象变化
-:::深度静态缺点 缺点
+:::caution 深度静态缺点 缺点
 - 深度监听 需要递归 更耗性能
 - 无法监听 新增的属性/删除的属性 使用Vue.set Vue.delete
 - 无法原生监听数组
@@ -141,8 +141,8 @@ delete data.name // 删除属性，监听不到 —— 所有已 Vue.delete
 
 :::
 
-### 深度监听 数组变化 略
-:::tip 监听数组
+### 深度监听 数组变化 略 {#watch-arr}
+:::tip 监听数组 重写push pop等方法
 <Tabs>
   <TabItem value="array" label="处理数组">
 
@@ -220,7 +220,7 @@ data.nums.push(4); // 监听数组
 :::
 
 ## vdom / diff算法
-### vdom
+### vdom {#vdom}
 :::caution 
 1. DOM 操作非常耗费性能
 2. Vue React **数据驱动视图**
@@ -268,7 +268,7 @@ data.nums.push(4); // 监听数组
 
 :::
 
-### snabbdom
+### snabbdom {#snabbdom}
 [github](https://github.com/snabbdom/snabbdom)
 :::info 总结
 - h 函数 用于创建vnode
@@ -316,21 +316,21 @@ patch(vnode, newVnode); // Snabbdom efficiently updates the old view to the new 
 ```
 :::
 
-### diff算法
+### diff算法 {#diff}
 :::note diff 应用
 - Vue React 体现在 v-for 中 key的作用
 - Linux / Git 的 diff命令
 :::
 
 :::info diff 算法优化
-1. 只同级比较 不跨级比较
+1. 只同级比较 不跨级比较 `patchVnode`
 ![same-level](/img/vue/diff1.png)
 2. 同级中 比较类型
    1. tag类型（selector）相同 (list中key也相同) 则为同一节点
-   1. tag类型（selector）不同 则直接删掉重建
+   1. tag类型（selector）不同 则直接删掉重建 `removeVnodes / addVnodes`
 ![same-level](/img/vue/diff2.png)
 ![same-level](/img/vue/diff3.png)
-3. list中 key 不相同
+3. list中 key 不相同 `updateChildren`
 ![same-level](/img/vue/diff4.png)
 :::
 
@@ -356,7 +356,7 @@ with(obj){
 }
 ```
 
-## 组件渲染过程
+## 组件渲染过程 {#render}
 :::info 初次渲染过程
 1. 解析 template 为 render函数
 2. 触发响应式 监听data属性 getter/setter
@@ -376,7 +376,7 @@ with(obj){
    1. 减少了DOM操作 提高性能
 :::
 
-## 前端路由
+## 前端路由 {#router}
 ```js
 // 基本概念
 const url = "http://127.0.0.1:8880/hash.html?a=100&b=200#/a/b"
