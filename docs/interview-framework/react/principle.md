@@ -130,6 +130,33 @@ React.createElement(List, null, child1, child2, '文本节点')
 :::
 
 ## setState / batchUpdate
+:::info setState
+- setState 是否异步
+  - 有时同步（普通使用）
+  - 有时同步（setTimeout DOM事件）
+- setState 是否合并
+  - 有时合并（对象形式） 合并相当于属性的压盖 
+  - 有时不合（函数形式）
+:::
+- [回顾setState](./app/basic.md#setState)
+
+:::tip 核心
+- setState 主流程
+  - todo setState与batchUpdate关系图
+- batchUpdate 机制
+  - 能够命中 batchUpdate
+    - 组件生命周期函数
+    - React中注册的事件
+  - 不能命中
+    - setTimeout / setInterval
+    - 自定义DOM事件 addEventListener
+- transaction 事务机制
+  1. 在头部插入 initialize 比如 isbatchingUpdate = true 
+  2. 正常执行逻辑
+  3. 在尾部插入 close 比如 isbatchingUpdate = false 
+  4. 多个事务顺序 先入先出
+  5. todo 图片 transaction事务机制
+:::
 
 ## 组件渲染过程
 
