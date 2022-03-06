@@ -57,7 +57,7 @@ sidebar_position: 3
 - tag 与 key 都相同 则为同一节点
 :::
 
-## JSX本质
+## JSX本质 {#jsx}
 :::info JSX本质
 - 等同与vue模版 template部分
 - 不是html
@@ -140,9 +140,9 @@ React.createElement(List, null, child1, child2, '文本节点')
 :::
 - [回顾setState](./app/basic.md#setState)
 
-:::tip 核心
-- setState 主流程
-  - todo setState与batchUpdate关系图
+### batchUpdate / dirtyComponents {#dirty}
+:::info 图解 与 分析
+- todo setState与batchUpdate关系图
 - batchUpdate 机制
   - 能够命中 batchUpdate
     - 组件生命周期函数
@@ -151,6 +151,11 @@ React.createElement(List, null, child1, child2, '文本节点')
     - setTimeout / setInterval
     - 自定义DOM事件 addEventListener
 - transaction 事务机制
+  - isbatchingUpdate
+:::
+
+### 事务机制
+:::info 图解 与 分析
   1. 在头部插入 initialize 比如 isbatchingUpdate = true 
   2. 正常执行逻辑
   3. 在尾部插入 close 比如 isbatchingUpdate = false 
@@ -159,4 +164,35 @@ React.createElement(List, null, child1, child2, '文本节点')
 :::
 
 ## 组件渲染过程
+- [回顾Vue](../vue/principle.md#render) 组件渲染与关系过程
+- [回顾JSX本质](#jsx) createElement -> vnode
+- [回顾dirtyComponents](#dirty) 
+
+:::tip 1渲染过程
+- props state
+- render() 生成 vnode
+- patch(emptyEle,vnode)
+:::
+:::tip 2更新过程
+- setState -> dirtyComponent batchUpdate机制
+- render() 生成 newVnode
+- patch(vnode,newVnode)
+:::
+
+### React-fiber 技术
+:::info 更新 2阶段
+1. 阶段一 reconciliation阶段 执行diff算法 找出想要更新的vnode
+2. 阶段二 commit阶段 将diff对比最小修改结果 渲染到DOM 不可拆分
+:::
+:::danger 性能问题
+- JS单线程 DOM渲染是同线程
+- 若组件足够复杂 组件更新 diff计算和组件渲染 压力变大
+- 若再加上DOM操作（动画/鼠标拖拽 连续型操作等）将卡顿
+:::
+:::tip 解决方案 fiber
+- 将 reconciliation阶段 任务进行拆分
+- DOM需渲染 繁忙时 暂停 reconciliation
+- DOM渲染完 空闲时 恢复 reconciliation
+- 核心API window.requestIdleCallback 判断
+:::
 
