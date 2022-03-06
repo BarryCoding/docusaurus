@@ -104,7 +104,30 @@ React.createElement(List, null, child1, child2, '文本节点')
 ```
 :::
 
-## 合成事件
+## SyntheticEvent
+:::info 合成事件介绍
+1. event 是 SyntheticEvent ，模拟出来 DOM 事件所有能力
+2. event.nativeEvent 是原生事件对象
+3. 所有的事件，都被挂载到 document 上 进行事件代理
+4. 和 DOM 事件不一样，和 Vue 事件也不一样
+:::
+
+- [回顾React事件](./app/basic.md#event)
+- todo 合成事件 图示
+
+:::tip 优点
+- 更好的兼容和跨平台 如移动端
+- 事件挂载到document/root上 减少内存消耗 避免频繁解绑
+- 方便事件的统一管理 / 事务机制
+:::
+
+:::danger React17更新
+- React 16 事件绑定到 document
+- React 17 事件绑定到 root节点
+  - 便于多个React版本并存 如微前段
+
+![difference](/img/react/react_17_event_delegation.png)
+:::
 
 ## setState / batchUpdate
 
