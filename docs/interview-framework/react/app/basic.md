@@ -512,7 +512,7 @@ this.setState({
 ```
 :::
 
-## 组件生命周期
+## 组件生命周期 {#lifecycle}
 - constructor
 - render
 - componentDidMount

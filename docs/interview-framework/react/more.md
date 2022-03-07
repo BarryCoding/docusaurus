@@ -36,7 +36,7 @@ store.dispatch = function exDispatch(action){
 - mapStateToProps
 - mapDispatchToProps
 
-## react-router
+## react-router {#router}
 - 路由模式
   1. HashRouter http://localhost:3000/#/user  
   2. BrowerRouter 模式  http://localhost:3000/user 需server端支持

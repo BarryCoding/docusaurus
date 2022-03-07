@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # React 原理
 
-## 函数式编程
+## 函数式编程 {#fn}
 :::tip
 - 一种编程范式
 - 纯函数
@@ -104,7 +104,7 @@ React.createElement(List, null, child1, child2, '文本节点')
 ```
 :::
 
-## SyntheticEvent
+## SyntheticEvent {#event}
 :::info 合成事件介绍
 1. event 是 SyntheticEvent ，模拟出来 DOM 事件所有能力
 2. event.nativeEvent 是原生事件对象

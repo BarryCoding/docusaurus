@@ -53,7 +53,7 @@ export default function ListFn(props) {
 </Tabs>
 :::
 
-## 非受控组件 与 ref
+## 非受控组件 与 ref {#ref}
 :::caution 特点
 - `ref` 用于操作 DOM元素
 - `defaultValue` `defaultChecked`
@@ -257,7 +257,7 @@ function ThemeLink(props) {
 </Tabs>
 :::
 
-## 懒加载 异步组件
+## 懒加载 异步组件 {#lazy}
 :::note 使用
 - import() 异步组件
 - React.lazy() 懒加载

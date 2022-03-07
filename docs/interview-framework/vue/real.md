@@ -7,10 +7,10 @@ sidebar_position: 9
 ## v-show / v-if 区别
 [解答](./app/basic.md/#if)
 
-## 为何 v-for 中要用key
+## 为何 v-for 中要用key {#key}
 - 必须使用key， 不推荐使用index/random
-- vdom比较时 使用diff算法，通过tag类型和key来进行对比
-- 确保vdom的唯一性
+- vdom比较时 确保vdom的唯一性 使用diff算法，通过tag类型和key来进行对比
+- 通过diff算法得出最少渲染内容 提升渲染性能
 
 ## 描述 Vue组件 生命周期
 [图解](./app/components.md/#lifecycle)
@@ -42,7 +42,7 @@ sidebar_position: 9
 - script 中 `export default {}` 的是一个类/组件累
 - 实例化后的组件彼此的data数据不会互相影响
 
-## ajax请求应该放在哪个生命周期
+## ajax请求应该放在哪个生命周期 {#ajax}
 - mounted
 - JS是单线程，ajax请求是异步的
 - 放在mounted前 无卵用 且让逻辑混乱
@@ -99,11 +99,11 @@ sidebar_position: 9
 ## Vue 常见 性能优化
 1. v-show / v-if
 2. computed 缓存
-3. v-for 尽可能保证 key的唯一性
+3. v-for 尽可能保证 key的唯一性 业务id
 4. beforeDestroy 避免内存泄露
 5. 异步组件
 6. keep-alive
 7. data层级设计 扁平化
 8. 配置 vue-loader 在开发环境的模版编译（预编译）
-9. [webpack优化](../webpack/performance.md)
-10. [前端通用优化](../../interview-basic/env-prod.md#performance)
+9. [前端通用优化](../../interview-basic/env-prod.md#performance)
+10. [webpack优化](../webpack/performance.md)

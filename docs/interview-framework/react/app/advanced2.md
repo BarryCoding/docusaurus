@@ -122,7 +122,7 @@ List.propTypes = {
 </Tabs>
 :::
 
-### PureComponent memo
+### PureComponent memo {#pure}
 :::caution SCU浅比较
 - PureComponent 纯类组件 自动实现浅比较
 - memo 纯函数组件 自动实现浅比较
@@ -191,7 +191,7 @@ map2.get('a')
 ```
 :::
 
-## 组件公共逻辑抽离
+## 组件公共逻辑抽离 {#common}
 :::caution 
 - mixin 已被 React 废弃
 - HOC 
