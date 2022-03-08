@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# CSS还原UI设计
+# 还原UI设计
 1. 产品设计原型
 2. UI设计页面
 3. 前端还原UI
