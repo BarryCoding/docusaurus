@@ -38,7 +38,7 @@ sidebar_position: 4
 :::
 
 ### flex-flow 缩写
-:::info 混合 主轴方向+换行
+:::info 容器混合 主轴方向+换行
 - flex-flow: flex-direction值 flex-wrap值;
 :::
 
@@ -51,7 +51,7 @@ sidebar_position: 4
 - space-between 离主轴开始间隔+离主轴结束间隔=0
 - space-evenly 离主轴开始间隔+离主轴结束间隔=子项间间隔
 :::
-### 交叉轴对齐
+
 ### align-content
 :::info 控制交叉轴 多行/多列 对齐方式
 - 不换行 则无卵用 必须 flex-wrap:wrap
@@ -63,6 +63,7 @@ sidebar_position: 4
 - space-between 针对多行/多列 
 - space-evenly 针对多行/多列
 :::
+
 ### align-items
 :::info 控制交叉轴 每一行/每一列 对齐方式
 - strech (default) 拉伸
@@ -118,31 +119,68 @@ sidebar_position: 4
 
 ## flex 子项语法
 :::info flex子项 样式属性
-- order
 - flex-grow
 - flex-shrink
 - flex-basis
 - flex
+- order
 - align-self
+- 配合选择器`sel:nth-of-type(n)`
 :::
 
 ### flex-grow
-- 默认值为0 内容长度不超过主轴长度 不会占用剩余主轴方向空间
+- 默认值为0 内容长度`不超过主轴长度` 不会占用剩余主轴方向空间
 - 值为1或大于1 则占满剩余空间
 - 值为0.5 占满剩余空间的0.5
 - 多个子元素 根据值 进行等比分配
 
 ### flex-shrink
-- 默认值为1 内容长度超过主轴长度 自动收缩为主轴长度
+- 默认值为1 内容长度`超过主轴长度` 自动收缩为主轴长度
 - 多个子元素 根据值 和 超出长度 进行等比分配
 
-### flex-basis / flex缩写
+### flex-basis
+> flex-basis 子项在主轴方向的初始大小 
+:::info 可配置属性值
+- 默认值为auto 自动适应内容大小
+- 0% 50% 100% 主轴百分比占比 0%为最小内容宽度
+- 100px 主轴初始绝对大小 优先级大于宽高
+:::
+
+### flex 缩写
+:::info 子项混合 自增+自减+初始
+- flex: flex-grow值 flex-shirk值 flex-basis值;
+:::
+
+### order
+- 默认值 0 改变当前子项的排序 
+- 可用负数 
+
+### align-self
+- 默认值 auto 改变当前子项的交叉轴对齐方式 
+- 相当于 align-items的单个修改
 
 ## flex 子项布局
-### 等高布局
-### 2列与3列布局
-### sticky footer布局
+### 子项自动等高-布局
+- 应用：左栏右栏 保持高度相等
+- 弹性布局默认就是等高布局 `display:flex`
+- 弹性容器盒子高度由子项的最大内容高度撑开
+
+### 2列与3列-布局
+- 应用：管理系统
+- 弹性容器 `display:flex; height:100vh`
+- 左侧(菜单栏) / 右侧(其他栏) 子项固定宽度 `width:200px`
+- 内容区 子项宽度自动适应剩余宽度 `flex-grow:1`
+
+### 粘性footer-布局
+- 应用：移动端页脚
+- 弹性容器 `display:flex; min-height:100vh; flex-direction:column`
+- header / footer 子项固定高度 `height:200px`
+- 内容区 子项高度自动适应 `flex-grow:1`
+
 ### 溢出项布局
+- 应用：移动端可滑动菜单栏
+- 弹性容器 `display:flex;`
+- 子项 `flex-shrink:0` 内容长度超出主轴长度后 不收缩
 
 ## 综合案例
 ### swiper 轮播图
