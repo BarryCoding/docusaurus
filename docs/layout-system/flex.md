@@ -55,7 +55,7 @@ sidebar_position: 4
 ### align-content
 :::info 控制交叉轴 多行/多列 对齐方式
 - 不换行 则无卵用 必须 flex-wrap:wrap
-- strech (default) 拉伸
+- strech (default) 拉伸充满交叉轴
 - flex-start
 - flex-end 
 - center 
@@ -66,7 +66,7 @@ sidebar_position: 4
 
 ### align-items
 :::info 控制交叉轴 每一行/每一列 对齐方式
-- strech (default) 拉伸
+- strech (default) 拉伸充满交叉轴
 - flex-start
 - flex-end 
 - center 
@@ -103,7 +103,7 @@ sidebar_position: 4
 }
 ```
 ### 子项分组布局
-对应子项 自动挤开横向空间
+某处等宽子项 自动挤开横向空间
 ```css
 .mian {
    display: flex;
@@ -178,10 +178,21 @@ sidebar_position: 4
 - 内容区 子项高度自动适应 `flex-grow:1`
 
 ### 溢出项布局
-- 应用：移动端可滑动菜单栏
+- 应用：移动端可滑动菜单栏 轮播图
 - 弹性容器 `display:flex;`
 - 子项 `flex-shrink:0` 内容长度超出主轴长度后 不收缩
 
 ## 综合案例
 ### swiper 轮播图
+- 顶级容器相对定位`position: relative;` 便于 小点切换 与 左右箭头定位
+- 轮播图容器 `display: flex;`
+  - 图容器 `width:100%; flex-shrink:0`
+  - 图片 `width:100%`
+- 轮播图页脚容器 绝对定位到最下方 弹性布局 子项完全居中对齐
+- 左右箭头容器 绝对定位到左上/右上 高度充满 弹性布局 子项箭头垂直居中
+
 ### 知乎 导航
+- 头部顶级容器 背景色
+- 头部内容容器 margin居中 配置最大最小宽度 弹性布局 弹性项上下居中 
+- 左侧导航菜单 右侧按钮群 都弹性布局
+- 中间搜索栏容器 弹性布局+自动增长 。。。
