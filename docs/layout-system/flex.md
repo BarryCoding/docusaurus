@@ -3,6 +3,7 @@ sidebar_position: 4
 ---
 
 # flex 弹性布局
+- [CSS-TRICKS To-Learn](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
 
 ## flex 容器语法
 - display:flex 将容器变为弹性布局
