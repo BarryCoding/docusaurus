@@ -4,7 +4,7 @@ sidebar_position: 5
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# grid 网格布局
+# grid 布局基础
 > CSS grid 用于二维布局。把内容按行和列进行排版，实现复杂布局。
 
 - [CSS-TRICKS To-Learn](https://css-tricks.com/snippets/css/complete-guide-grid/)
@@ -39,16 +39,18 @@ import TabItem from '@theme/TabItem';
 </TabItem>
 <TabItem value="item" label="网格子项">
 
-- grid-area
-- grid-column-start
-- grid-column-end
-- grid-row-start
-- grid-row-end
-- grid-cloumn
-- grid-row
-- palce-self
-- align-self
-- justify-self
+- 基于线的元素放置
+  - grid-column-start
+  - grid-column-end
+  - grid-row-start
+  - grid-row-end
+  - grid-cloumn
+  - grid-row
+  - grid-area
+- 单项对齐方式
+  - justify-self
+  - align-self
+  - palce-self
 
 </TabItem>
 </Tabs>
@@ -145,7 +147,7 @@ import TabItem from '@theme/TabItem';
 ```
 
 </TabItem>
-<TabItem value="3" label="合并缩写">
+<TabItem value="3" label="缩写">
 
 ```css
 .container{
@@ -159,7 +161,7 @@ import TabItem from '@theme/TabItem';
    "a1 a1 a2"
    "a3 a3 a3";
 }
-/* 合并缩写 */
+/* 缩写 */
 .combine{
    display: grid;
    /* 更直观的格子宽高 与 区域命名 */
@@ -216,7 +218,7 @@ import TabItem from '@theme/TabItem';
 ```
 
 </TabItem>
-<TabItem value="3" label="合并缩写">
+<TabItem value="3" label="缩写">
 
 ```css {9-10}
 .container{
@@ -225,7 +227,7 @@ import TabItem from '@theme/TabItem';
    /* 列之间的间隙 */
    column-gap: 30px;
 }
-/* 合并缩写 */
+/* 缩写 */
 .combine{
    /* gap: 行间隙 列间隙; */
    gap: 20px 30px;
@@ -237,6 +239,57 @@ import TabItem from '@theme/TabItem';
 :::
 
 ### 网格对齐方式
+:::info 核心概念/属性
+> 网格容器中`单项`内容的对齐方式 默认stretch拉伸填满
+
+- 左右方向 justify-self
+- 上下方向 align-self
+- 上下左右 place-self
+:::
+
+:::tip 语法
+<Tabs>
+<TabItem value="1" label="某项自己的对齐方式">
+
+```css
+.container{
+   width:300px;height:300px;background:skyblue;
+   display: grid;
+   /* 容器分配子项大小 */
+   grid-template-columns: 100px 100px 100px;
+   grid-template-rows: 100px 100px 100px;
+}
+.item:nth-of-type(1) {
+   /* 子项的大小 小于 容器分配的大小 才有对齐效果 */
+   width:50px;
+   height:50px;
+   background:pink;
+   justify-self: center;
+   align-self: center;
+}
+```
+
+</TabItem>
+<TabItem value="3" label="缩写">
+
+```css {9-10}
+.item{
+   /* 单项 左右对齐方式 */
+   justify-self: start;
+   /* 单项 上下对齐方式 */
+   align-self: end;
+}
+/* 缩写 */
+.combine{
+   /* place-self: 上下 左右; */
+   place-self: end start;
+}
+```
+
+</TabItem>
+</Tabs>
+:::
+
 :::info 核心概念/属性
 > 网格容器中`子项内容`的对齐方式 默认stretch拉伸填满
 
@@ -270,7 +323,7 @@ import TabItem from '@theme/TabItem';
 ```
 
 </TabItem>
-<TabItem value="3" label="合并缩写">
+<TabItem value="3" label="缩写">
 
 ```css {9-10}
 .container{
@@ -279,7 +332,7 @@ import TabItem from '@theme/TabItem';
    /* 每项 上下对齐方式 */
    align-items: end;
 }
-/* 合并缩写 */
+/* 缩写 */
 .combine{
    /* place-items: 上下 左右; */
    place-items: end start;
@@ -318,7 +371,7 @@ import TabItem from '@theme/TabItem';
 ```
 
 </TabItem>
-<TabItem value="3" label="合并缩写">
+<TabItem value="3" label="缩写">
 
 ```css {9-10}
 .container{
@@ -327,7 +380,7 @@ import TabItem from '@theme/TabItem';
    /* 纵向整体 上下对齐方式 */
    align-content: end;
 }
-/* 合并缩写 */
+/* 缩写 */
 .combine{
    /* place-content: 上下 左右; */
    place-content: end start;
@@ -359,7 +412,7 @@ import TabItem from '@theme/TabItem';
    /* 显式网格3*1 隐士网格在下方的剩余空间3*1 */
    grid-template-columns: 100px 100px 100px;
    grid-template-rows: 100px;
-   /* 默认：row 就是行产生隐式网格 */
+   /* 默认：row 就是按行产生隐式网格 */
    grid-auto-flow: row;
    /* 调节按行产生隐式网格的高度 默认是strech自动适应占满了*/
    grid-auto-rows: 100px;
@@ -431,15 +484,104 @@ import TabItem from '@theme/TabItem';
 :::
 
 ### 基于线的元素放置
-### 子项对齐方式
-### repeat() minmax()
+:::info 核心概念/属性
+> 子项区域的起始和结束位置 含水平和垂直方向
 
-## 网格布局应用
-### 叠加布局
-### 多组合排列布局
-### 栅格布局
-### 自适应行列布局
+- grid-column-start 项按列线的开始位置
+- grid-column-end 项按列线的结束位置
+- grid-row-start 项按行线的开始位置
+- grid-row-end 项按行线的结束位置
+- grid-cloumn 简写 项按列线的开始结束位置
+- grid-row 简写 项按行线的开始结束位置
+- grid-area 简写 项的区域
+:::
 
-## 综合案例
-### 百度热词风云榜
-### 小米商城导航菜单
+:::tip 语法
+<Tabs>
+<TabItem value="1" label="基于线放置-后项自动">
+
+```css
+.container{
+   width:300px;height:300px;background:skyblue;
+   display: grid;
+   grid-template-columns: 1fr 1fr 1fr;
+   grid-template-rows: 1fr 1fr 1fr;
+}
+.item:nth-of-type(1){
+   background:pink;
+   grid-column-start: 2;
+   grid-column-end: 3;
+   /* 默认值：auto */
+   grid-row-start: auto;
+   grid-row-end: auto;
+}
+/* 后面项会自动后方填充 */
+.item:nth-of-type(2){ background:slategray;}
+```
+
+</TabItem>
+<TabItem value="2" label="基于线放置-后项回头">
+
+```css
+.container{
+   width:300px;height:300px;background:skyblue;
+   display: grid;
+   grid-template-columns: 1fr 1fr 1fr;
+   grid-template-rows: 1fr 1fr 1fr;
+}
+.item:nth-of-type(1){
+   background:pink;
+   grid-column-start: 2;
+   grid-column-end: 3;
+   /* 确定上下左右所有位置*/
+   grid-row-start: 1;
+   grid-row-end: 2;
+}
+/* 后面项会从头开始填充 */
+.item:nth-of-type(2){ background:slategray;}
+```
+
+</TabItem>
+<TabItem value="3" label="夸线+线的命名">
+
+```css
+.container{
+   width:300px;height:300px;background:skyblue;
+   display: grid;
+   /* 3*3格 4*4线 线的用'[命名]' */
+   grid-template-columns:[col1] 1fr [col2] 1fr [col3] 1fr [col4];
+   grid-template-rows:[row1] 1fr [row2] 1fr [row3] 1fr [row4];
+}
+.item:nth-of-type(1){
+   background:pink;
+   /* 按线的数量的自动命名 */
+   grid-column-start:2; 
+   /* span 用来夸 n格 */
+   grid-column-end:span 2;
+   /* 使用 定义的基线名 */
+   grid-column-start: col2;
+   grid-column-end: col4;
+}
+.item:nth-of-type(2){ background:slategray;}
+```
+
+</TabItem>
+<TabItem value="4" label="基线缩写">
+
+```css {3-5,9-10}
+.item:nth-of-type(1){
+   background:pink;
+   /* 开始 / 结束 使用'/'隔开 */
+   grid-column: 2 / 3;
+   grid-row: 2 / 4;
+}
+.item:nth-of-type(2){ 
+   background:slategray;
+   /* row-start / column-start / row-end / column-end */
+   grid-area: 1 / 2 / 3 / 4;
+}
+```
+
+</TabItem>
+</Tabs>
+:::
