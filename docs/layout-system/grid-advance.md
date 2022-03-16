@@ -374,7 +374,7 @@ grid-area: 2/1/span 2/span 2;
    /* 网格 3列 4行 自动等高等宽 */
    grid-template-columns: repeat(3, 1fr);
    grid-template-rows: repeat(4, 1fr);
-   /* 命名来划分区域 需保证每个区域都是完整矩形 */
+   /* 分配区域 命名方式比基线划分 【更直观】 需保证每个区域都是完整矩形 */
    grid-template-areas: 
    "a1 a3 a3"
    "a2 a3 a3"
