@@ -322,5 +322,87 @@ grid-area: 2/1/span 2/span 2;
 :::
 
 ## 综合案例
+
 ### 百度热词风云榜
-### 小米商城导航菜单
+![效果图](/img/layout/baidu.jpg)
+
+:::info 原理
+- 通过 grid-tempalate-area 定义区域名
+- 子项 匹配 对应的区域
+:::
+
+:::tip 中间网格区
+<Tabs>
+<TabItem value="1" label="结构">
+
+```html
+<div class="top-list">
+   <div class="theme1">
+      <a href="#"><h3>实时热点</h3><p>阿里第一颗芯</p></a>
+   </div>
+   <div class="theme2">
+      <a href="#"><h3>实时热点</h3><p>阿里第一颗芯</p></a>
+   </div>
+   <div class="theme1">
+      <a href="#"><h3>实时热点</h3><p>阿里第一颗芯</p></a>
+   </div>
+   <div class="theme1">
+      <a href="#"><h3>实时热点</h3><p>阿里第一颗芯</p></a>
+   </div>
+   <div class="theme1">
+      <a href="#"><h3>实时热点</h3><p>阿里第一颗芯</p></a>
+   </div>
+   <div class="theme3">
+      <a href="#"><h3>实时热点</h3><p>阿里第一颗芯</p></a>
+   </div>
+   <div class="theme3">
+      <a href="#"><h3>实时热点</h3><p>阿里第一颗芯</p></a>
+   </div>
+</div>
+```
+
+</TabItem>
+<TabItem value="2" label="样式">
+
+```css {6-16,18-24}
+.top-list{
+   width:336px; height:352px;
+   padding: 0 14px;
+   border:1px #dadadc solid;
+   margin:20px auto;
+   display: grid;
+   /* 网格 3列 4行 自动等高等宽 */
+   grid-template-columns: repeat(3, 1fr);
+   grid-template-rows: repeat(4, 1fr);
+   /* 命名来划分区域 需保证每个区域都是完整矩形 */
+   grid-template-areas: 
+   "a1 a3 a3"
+   "a2 a3 a3"
+   "a4 a4 a5"
+   "a6 a7 a7";
+   gap:8px;
+}
+.top-list div:nth-of-type(1){grid-area: a1;}
+.top-list div:nth-of-type(2){grid-area: a2;}
+.top-list div:nth-of-type(3){grid-area: a3;}
+.top-list div:nth-of-type(4){grid-area: a4;}
+.top-list div:nth-of-type(5){grid-area: a5;}
+.top-list div:nth-of-type(6){grid-area: a6;}
+.top-list div:nth-of-type(7){grid-area: a7;}
+
+.top-list a{
+   display: block; 
+   height:100%;line-height: 30px;
+   color:white;
+}
+.top-list h3{
+   text-align: right;margin-right:4px;
+}
+.top-list p{
+   text-align: center;
+}
+```
+
+</TabItem>
+</Tabs>
+:::
