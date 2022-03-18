@@ -8,14 +8,15 @@ import TabItem from '@theme/TabItem';
 ## 盒模型（尺寸）
 ### 盒模型 空间组成
 :::info content-box组成
-1. content width/height
-2. padding
-3. border
-4. margin
+1. content 宽高
+2. padding 上右下左
+3. border 上右下左
+4. margin 上右下左
 :::
+
 :::caution 注意
 - padding 不能为负值 margin 可以为负值
-- 背景色会平铺到非 margin 区域
+- 自身的`背景`会平铺到 非 `margin` 区域
 - margin-top 的传递： 子盒子 margin-top 传递给父盒子 margin-top
 - margin上下折叠 取最大值
 :::
@@ -25,26 +26,29 @@ import TabItem from '@theme/TabItem';
 - `display: block`
 - 独占一行
 - 支持 所有样式
-- 不写宽度 盒子宽度与父容器宽度相同 内容会自适应
+- 不写宽度 盒子横向空间与父容器width相同 内容会自适应
 - 所占区域为矩形
 :::
+
 :::note 纯内联盒子
 - `display: inline`
 - 不独占一行 在空间足够时不会换行
 - 不支持 部分样式 如 width height
-- 宽度由内容决定
+- `宽度由内容决定`
 - 所占区域不一定是矩形 如 换行前后
-- 内联盒子之间 会有空隙
+- 内联盒子间 会有空隙
 :::
+
 :::danger 布局
-- 布局使用块级元素
-- 不要使用内联元素布局
-- 内联盒子 只用做 文本修饰
+- 尽量使用块级元素
+- 尽可能不用内联元素
+  - 内联元素 只用在 文本修饰
 :::
 
 ### 自适应盒模型
-- 不写width 盒子空间与父容器width相同 且内容会自适应
-- `box-sizing: content-box`
+- `diaplay:block`
+- 不写width 盒子横向空间与父容器width相同 且内容会自适应
+- 默认 `box-sizing: content-box`
 
 ### 标准与怪异 盒模型
 :::info 区别
@@ -52,15 +56,16 @@ import TabItem from '@theme/TabItem';
   - `box-sizing: content-box`
 - 怪异盒模型 宽度为content+padding+border
   - `box-sizing: border-box`
+  - button / bootstrap框架 就是默认怪异盒模型
 :::
-:::tip 应用
+:::tip 怪异盒模型 应用
 1. 量取好UI设计稿具体尺寸后 不再去calc计算
 2. 需要设置**百分比宽度**的盒子模型
 :::
 
 ## 浮动（位置）
 :::info 浮动详解
-> 元素浮动会`脱离文档流` 并按浮动方向 元素外边界贴到 其他浮动元素外边界或父元素内边界为止
+> 元素浮动 会`脱离文档流` 并按浮动方向 元素外边界贴到 其他浮动元素外边界或父元素内边界为止
 
 > 文档流：元素在web页面上的呈现方式 按照出现的先后顺序进行排列 如二维图片沿着三维高度方向飘起一定高度
 :::
@@ -87,10 +92,10 @@ import TabItem from '@theme/TabItem';
 - position 元素在文档中的定位方式
 - `position: static` 默认值 
 - `position: relative `
-  - 还在文档流中 且不影响其他元素
+  - 还`在文档流中` 且不影响其他元素
   - 相对自己原来的位置 为参照
 - `position: absolute `
-  - 脱离了文档流 且不占空间
+  - `脱离文档流` 且不占空间
   - 具备内联盒子特性 宽度不设置 则由内容决定
   - 具备块级盒子特性 支持所有样式
   - 以外层最近定位元素 为参照 `最近非static定位祖先元素` 
@@ -106,7 +111,7 @@ import TabItem from '@theme/TabItem';
   - 触发特定阀值后 为固定定位 `fixed`
   - 特定阀值 以可视区 为参照 是否触发
 - z-index 失效
-  - 优先与同级元素z-index比较 而非同级元素的子元素z-index比较
+  - `优先与同级元素z-index比较` 而非同级元素的子元素z-index比较
 :::
 
 ## 扩展
@@ -114,7 +119,7 @@ import TabItem from '@theme/TabItem';
 <!-- ### display属性 略过 -->
 
 ### writing-mode
-:::info writing-mode
+:::info 文字书写方向
 - horizontal-tb 水平方向自上而下的书写方式
 - vertical-rl 垂直方向自右而左的书写方式
 - vertical-lr 垂直方向自左而右的书写方式
@@ -131,7 +136,9 @@ import TabItem from '@theme/TabItem';
 :::
 :::tip 触发条件 满足任意一个
 - `float` 的值不是none `脱离文档流`
+  - 浮起来了
 - `position` 的值不是static或者relative `脱离文档流`
+  - absolute fixed 
 - `display` 的值是inline-block、table-cell、flex、table-caption或者inline-flex
 - `overflow` 的值不是visible
 :::
@@ -139,7 +146,7 @@ import TabItem from '@theme/TabItem';
 :::caution BFC应用
 - 避免 margin-top 的传递
 - 避免 父容器 高度塌陷
-- flex 和 grid 默认自带BFC规范
+- `flex 和 grid` 默认自带BFC规范
 :::
 
 ### 默认样式 清除方案
@@ -149,7 +156,7 @@ import TabItem from '@theme/TabItem';
 >切图软件中进行尺寸或位置测量完对应到样式时，可能会受到默认样式的影响，从显示效果跟设计图效果不符。
 :::
 
-:::tip 清除方案
+:::tip 清除默认样式方案
 <Tabs>
   <TabItem value="reset" label="Reset CSS">
 
