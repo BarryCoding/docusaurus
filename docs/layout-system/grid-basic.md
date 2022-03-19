@@ -15,8 +15,8 @@ import TabItem from '@theme/TabItem';
 <TabItem value="container" label="网格容器">
 
 - 网格模版
-  - grid-template-rows
   - grid-template-columns
+  - grid-template-rows
   - grid-template-areas
   - grid-template
 - 网格间隙
@@ -531,7 +531,7 @@ import TabItem from '@theme/TabItem';
 }
 .item:nth-of-type(1){
    background:pink;
-   grid-column-start: 2;
+   grid-column-start: 2; /* 按线的数量的自动命名 */
    grid-column-end: 3;
    /* 确定上下左右所有位置*/
    grid-row-start: 1;
@@ -554,10 +554,8 @@ import TabItem from '@theme/TabItem';
 }
 .item:nth-of-type(1){
    background:pink;
-   /* 按线的数量的自动命名 */
    grid-column-start:2; 
-   /* span 用来夸 n格 */
-   grid-column-end:span 2;
+   grid-column-end:span 2; /* span 用来夸 n格 */
    /* 使用 定义的基线名 */
    grid-column-start: col2;
    grid-column-end: col4;

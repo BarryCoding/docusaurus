@@ -9,8 +9,8 @@ import TabItem from '@theme/TabItem';
 ## 高级方法
 ### repeat() 
 :::info 核心概念
-- `repeat(times, size)` 根据循环次数和大小 进行填写
-- times 自动填充/自适应屏幕大小 auto-fill
+- `repeat(times, size)` 参数 循环次数和尺寸大小
+- times 自动填充数量 自适应屏幕大小 auto-fill
 :::
 
 :::tip 应用
@@ -139,16 +139,16 @@ import TabItem from '@theme/TabItem';
    display: grid;
 }
 .grid-container img{
-grid-area: 1/1/1/1;
+   grid-area: 1/1/1/1; /* 同一区域 */
 }
 .grid-container span{
-grid-area: 1/1/1/1;
+   grid-area: 1/1/1/1; /* 同一区域 */
    /* 右上角 */
    justify-self: end; align-self: start;
    margin:5px;
 }
 .grid-container p{
-grid-area: 1/1/1/1;
+   grid-area: 1/1/1/1; /* 同一区域 */
    /* 最下方 */
    align-self: end;
    background:rgba(0,0,0,0.5); color:white;
@@ -250,7 +250,7 @@ grid-area: 2/1/span 2/span 2;
 .row .col-9{grid-area: auto/auto/auto/span 9;}
 .row .col-10{grid-area: auto/auto/auto/span 10;}
 .row .col-11{grid-area: auto/auto/auto/span 11;}
-.row .col-12{grid-area: auto/auto/auto/span 12;}            
+.row .col-12{grid-area: auto/auto/auto/span 12;} /* 自动向右填充12格 */            
 ```
 
 </TabItem>

@@ -4,23 +4,22 @@ sidebar_position: 4
 
 # flex 弹性布局
 - [CSS-TRICKS To-Learn](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
+- 适合 一维简单布局 单行/单列
+- 二维 多行复杂布局 推荐用grid
 
 ## flex 容器语法
-- display:flex 将容器变为弹性布局
-- 适合 一维 单行/单列
-- 二维 多行布局 用grid
 
-:::info flex容器 样式属性
-1. flex-direction 主轴方向
-2. flex-wrap 沿交叉轴方向换行
-3. flex-flow 1+2缩写
-4. justify-content 主轴对齐
-5. align-items
-6. align-content
+:::info 容器样式
+1. flex-direction
+2. flex-wrap
+3. flex-flow
+4. justify-content
+5. align-content
+6. align-items
 :::
 
 ### flex-direction
-:::info 控制主轴方向 交叉轴总与主轴垂直
+:::info 控制`主轴方向` 交叉轴总与主轴垂直
 - row (default) 主轴 左右
   - 交叉轴 上下
 - row-reverse 主轴 右左
@@ -32,29 +31,29 @@ sidebar_position: 4
 :::
 
 ### flex-wrap
-:::info 控制沿交叉轴方向换行
+:::info 控制沿交叉轴方向`换行`
 - nowrap (default) 不换行
-- wrap 换行 每行平分父容器高度
+- wrap 换行 且每行平均分父容器高度
 - wrap-reverse 交叉轴反向
 :::
 
-### flex-flow 缩写
-:::info 容器混合 主轴方向+换行
+### flex-flow
+:::info 简写 `主轴方向+换行`
 - flex-flow: flex-direction值 flex-wrap值;
 :::
 
 ### justify-content 
-:::info 控制主轴对齐方式
+:::info 控制`主轴对齐`方式
 - flex-start (default) 主轴开始方向
 - flex-end 主轴结束方向
 - center 都居中
 - space-around 离主轴开始间隔+离主轴结束间隔=子项间间隔
 - space-between 离主轴开始间隔+离主轴结束间隔=0
-- space-evenly 离主轴开始间隔+离主轴结束间隔=子项间间隔
+- space-evenly 离主轴开始间隔=离主轴结束间隔=子项间间隔
 :::
 
 ### align-content
-:::info 控制交叉轴 多行/多列 对齐方式
+:::info 控制`交叉轴对齐`方式 `多行/多列` 
 - 不换行 则无卵用 必须 flex-wrap:wrap
 - strech (default) 拉伸充满交叉轴
 - flex-start
@@ -75,36 +74,37 @@ sidebar_position: 4
 :::
 
 ## flex 容器布局
-### 内联/块 上下左右居中布局
+### 内联/块 上下左右居中 布局
 ```css
 /* 容器盒子 */
 .box-center{
    display:flex;
-   justify-content:center;
-   align-items:center;
+   justify-content:center; /* 项沿主轴居中 */
+   align-items:center; /* 项沿着交叉轴居中 */
 }
 ```
+
 ### 不定项 居中布局
 - 不确定子项个数底部居中 
-- pagenation / 轮播图下方小点
+- 场景 分页 / 轮播图下方小点
 
 ```css
 .flex-box{
    display:flex;
-   justify-content:center;
-   align-items:flex-end;
+   justify-content:center; /* 项沿主轴居中 */
+   align-items:flex-end; /* 项贴着交叉轴结束处 */
 }
 ```
 ### 均分列布局
 ```css 手机底部 导航栏
 .flex-box{
    display:flex;
-   justify-content:space-around;
-   align-items:flex-end;
+   justify-content:space-around; /* 项等距散开 */
+   align-items:flex-end; /* 项贴着交叉轴结束处 */
 }
 ```
 ### 子项分组布局
-某处等宽子项 自动挤开横向空间
+- 某处等宽子项 自动挤开横向剩余空间
 ```css
 .mian {
    display: flex;
@@ -119,32 +119,34 @@ sidebar_position: 4
 ```
 
 ## flex 子项语法
-:::info flex子项 样式属性
+:::info flex项样式
 - flex-grow
 - flex-shrink
 - flex-basis
 - flex
 - order
 - align-self
-- 配合选择器`sel:nth-of-type(n)`
+- 一般配合选择器`sel:nth-of-type(n)`
 :::
 
 ### flex-grow
-- 默认值为0 内容长度`不超过主轴长度` 不会占用剩余主轴方向空间
-- 值为1或大于1 则占满剩余空间
-- 值为0.5 占满剩余空间的0.5
-- 多个子元素 根据值 进行等比分配
+- 默认值为0 主轴方向的多项内容总长度 `不超过主轴长度` 会`拉伸`占用剩余主轴空间
+- 有剩余空间 才需要grow
+- 剩余空间大小为1，1可以分配给不同项
+- 若分配和值为1或大于1 则会占满主轴剩余空间
+- 若值和为0.5 占满剩余空间的50%
+- 多个子元素 根据数值比 将主轴剩余空间进行分配
 
 ### flex-shrink
-- 默认值为1 内容长度`超过主轴长度` 自动收缩为主轴长度
-- 多个子元素 根据值 和 超出长度 进行等比分配
+- 默认值为1 主轴方向的多项内容长度`超过主轴长度` 会`收缩`为主轴长度
+- 有超出空间 才需要shrink
+- 多个子元素 根据数值比 和 将超出主轴长度 进行等比分配
 
 ### flex-basis
-> flex-basis 子项在主轴方向的初始大小 
-:::info 可配置属性值
-- 默认值为auto 自动适应内容大小
-- 0% 50% 100% 主轴百分比占比 0%为最小内容宽度
-- 100px 主轴初始绝对大小 优先级大于宽高
+:::info 子项在主轴方向的`初始大小`
+- 默认值为auto 自动适应项内容大小
+- 0% 50% 100% 主轴百分占比 0%为最小内容宽度
+- 100px 主轴初始绝对大小 优先级大于项宽高
 :::
 
 ### flex 缩写
@@ -154,11 +156,11 @@ sidebar_position: 4
 
 ### order
 - 默认值 0 改变当前子项的排序 
-- 可用负数 
+- 可用负数 来排在前面
 
 ### align-self
 - 默认值 auto 改变当前子项的交叉轴对齐方式 
-- 相当于 align-items的单个修改
+- 相当于 align-items 的单项修改
 
 ## flex 子项布局
 ### 子项自动等高-布局
@@ -175,8 +177,8 @@ sidebar_position: 4
 ### 粘性footer-布局
 - 应用：移动端页脚
 - 弹性容器 `display:flex; min-height:100vh; flex-direction:column`
-- header / footer 子项固定高度 `height:200px`
-- 内容区 子项高度自动适应 `flex-grow:1`
+- header / footer 作为子项固定高度 `height:200px`
+- 内容区 作为子项高度自动适应 `flex-grow:1`
 
 ### 溢出项布局
 - 应用：移动端可滑动菜单栏 轮播图
@@ -191,9 +193,3 @@ sidebar_position: 4
   - 图片 `width:100%`
 - 轮播图页脚容器 绝对定位到最下方 弹性布局 子项完全居中对齐
 - 左右箭头容器 绝对定位到左上/右上 高度充满 弹性布局 子项箭头垂直居中
-
-### 知乎 导航
-- 头部顶级容器 背景色
-- 头部内容容器 margin居中 配置最大最小宽度 弹性布局 弹性项上下居中 
-- 左侧导航菜单 右侧按钮群 都弹性布局
-- 中间搜索栏容器 弹性布局+自动增长 。。。

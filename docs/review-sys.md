@@ -15,6 +15,11 @@ import TabItem from '@theme/TabItem';
 <Tabs>
 <TabItem value="mar" label="3月">
 
+- March 10 Jupiter
+  - 面试框架 初步完成
+  - 布局系统 尺寸与位置 盒模型 浮动 定位
+- March 11 Venus
+  - 布局系统 尺寸与位置 扩展
 - March 12 Saturn
   - new 温故而知新 文档
 - March 13 Sun
@@ -31,8 +36,14 @@ import TabItem from '@theme/TabItem';
 - March 17 Jupitor
   - 布局系统 响应式布局
 - March 18 Venus
-  - 布局系统 复习 1.导学 2.还原UI 3.尺寸位置
-  - 布局系统 特殊布局
+  - 布局系统 `复习` 1.导学 2.还原UI 3.尺寸位置
+  - 布局系统 特殊布局 (初步完成)
+- March 19 Saturn
+  - 布局系统 `复习` 4.flex 5.移动端适配 6.响应式 7.特殊 8.grid 
+  - 复习时 困死我了 但复习完了 布局系统
+  - 文档复习规则1 今天复习昨天 Mac查看 读写模式
+    - Venus 当天复习 不拖到 SaturnDay
+  - 文档复习规则2 SaturnDay Ipad查看 只读模式
 
 </TabItem>
 <TabItem value="apr" label="4月">
