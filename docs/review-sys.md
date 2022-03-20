@@ -56,6 +56,8 @@ import TabItem from '@theme/TabItem';
   - 开始 成真100
     - 下载 源码与辅助 资料
     - 创建 成真100 文档结构
+    - 更新 部署到 我的git.io
+    - 根基 基础知识 
 
 </TabItem>
 <TabItem value="apr" label="4月">
