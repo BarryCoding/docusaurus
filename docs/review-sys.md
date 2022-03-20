@@ -4,7 +4,15 @@ sidebar_position: 999
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# 温故而知新
+# 学习记录
+:::tip 名言
+>程序员领域时世界上最公平的职业领域
+
+>技能月强，技术越好，工资越高
+
+>掌握面试技巧，专业技能，就一定能被公司应聘
+:::
+
 :::info 复习规则
 - 复习时间以30-45分钟为1节
 - 需要其他的工具帮助
@@ -44,6 +52,10 @@ import TabItem from '@theme/TabItem';
   - 文档复习规则1 今天复习昨天 Mac查看 读写模式
     - Venus 当天复习 不拖到 SaturnDay
   - 文档复习规则2 SaturnDay Ipad查看 只读模式
+- March 20 Sun
+  - 开始 成真100
+    - 下载 源码与辅助 资料
+    - 创建 成真100 文档结构
 
 </TabItem>
 <TabItem value="apr" label="4月">
