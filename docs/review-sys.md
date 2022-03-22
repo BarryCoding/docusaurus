@@ -60,6 +60,10 @@ import TabItem from '@theme/TabItem';
     - 根基 基础知识 
 - March 21 Moon
   - 成真100 基础知识 继续
+  - 效率低 进度慢
+- March 22 Mars
+  - 成真100 先整理文档 效率提升大
+  - 成真100 昨天复习 完成
 
 </TabItem>
 <TabItem value="apr" label="4月">

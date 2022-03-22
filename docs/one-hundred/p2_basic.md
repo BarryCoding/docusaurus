@@ -152,17 +152,12 @@ function ajax(url) {
 ```
 :::
 
-- todo 合并 防抖和节流
-
 :::danger 区别与共性
 - 相同点
   - 防抖和节流都用于处理频繁触发的操作，优化操作体验。
 - 不同点
   - 防抖，关注结果 密集触发 只执行最后一次
   - 节流，关注过程 按合理频率 有节奏的执行
-- 地球绕太阳运动1年365天 地球运动轨迹
-  - 防抖 关注结果 获得 终点到起点2维距离 
-  - 节流 关注过程 获得 每天的运动起始距离 能得到1年过程中的运动轨迹 不是一个2维平面圆 而是3维螺旋前进
 :::
 
 ## 4 px | % | em | rem | vw | vh
@@ -182,16 +177,17 @@ function ajax(url) {
 >何时不推荐使用箭头函数
 
 :::danger 箭头函数的缺点
-- arguments 参数
-- 无法改变 this 函数无法call apply bind
+- 没有 arguments 参数
+- 无法改变 this 
+- 无法call apply bind
 - 多个箭头函数链式写法 难以阅读 (装逼过头)
 :::
 
-:::caution 不适用场景
+:::caution this指向的缘故 不适用场景 
 - 对象方法
 - 对象原型 
 - 构造函数
-- 动态上下文 如addEventListener
+- 动态上下文 如addEventListener 需要this指向事件对象
 - Vue 生命周期和方法
   - Vue 传统组件是一个JS对象 不可用箭头函数
   - React 传统的类组件是一个 class 可用箭头函数 
@@ -215,17 +211,17 @@ function ajax(url) {
 4. 客户端发包，服务端接收。服务端确认：可以关闭了
 :::
 
-:::tip 点外卖 类比
+:::tip 点外卖 结合 理论
 #### 3握手
-1. 用户点开周黑鸭外卖app 用户的手机网络正常
-2. 外卖app提供各种美食 商家外卖app正常运行
-3. 用户准备下单 在思考吃啥 外卖app发现有用户准备点他家外卖
+1. 用户点开周黑鸭外卖app 商家需确定用户在送餐区域才提供服务
+2. 用户确定 商家现在可以给我送餐 
+3. 用户准备下单 点单放入购物车 商家需准备处理 用户订单
 
 #### 4挥手
-1. 用户下单 鸭脖10份 鸭架3份 点击支付宝完成付款 用户完成订单
-2. app回馈 已经收到货款 鸭脖10份 鸭架3份 准备中 商家收款成功 并开始准备外卖
-3. app回馈 外卖已在路上 快递员马上就到 商家寄出外卖
-4. 用户收到外卖 订单完成 用户关闭app
+1. 用户下单 鸭脖10份 点击支付宝完成付款 用户完成订单
+2. app回馈 已经收到货款 鸭脖10份 备餐中请稍等
+3. 一会后 app回馈 快递员已取餐 在路上了 已寄出外卖
+4. 用户收到外卖 给5分评价 订单完成 商家确定收到用户取餐结果
 :::
 
 ## 7 for 循环
@@ -237,29 +233,208 @@ function ajax(url) {
   - 原理 `Object.getOwnPropertyDescriptors(obj)` 对象的属性描述 `enumerable: true`
 - for...of 遍历一个“可迭代对象 Symbol.iterator”，如数组、字符串、Map/Set 。针对一个迭代对象，所以获得 value
   - 原理 `arr[Symbol.iterator]` 迭代器模式，通过一个 `next` 方法返回下一个元素
-  - 如 `arguments` `NodeList` `Map` `Set` `generator`
+  - 如 `arguments` `NodeList` `Map` `Set`
+- 数组方法用不了 map函数/foreach函数 
+  - 类数组处理 `[...类数组]`
+  - 对象处理 ES6 `Object.keys() Object.values()`
 :::
 
 ### 7.2 for-await-of
+- 视频？ 
+>遍历的每个value为promise对象
+
 
 ## 8 offset | scroll | cilent + Height
+- 视频？ 实际内容的高度
+
+:::danger 区别
+- offsetHeight -> border + padding + content
+- clientHeight -> padding + content
+- scrollHeight -> padding + 实际内容的高度
+- scrollTop DOM 内部元素滚动的距离
+:::
 
 ## 9 HTMLCollection vs NodeList
+:::info 基础
+- DOM 结构是一棵树，树的所有节点都是 `Node` 
+  - 包括：document，元素，文本，注释，fragment 等
+- `Element` 继承于 Node 是 html 元素的基类
+
+```js
+// 节点类
+class Node {}
+
+// document 继承于 节点类
+class Document extends Node {}
+class DocumentFragment extends Node {}
+
+// 文本和注释 继承于 节点类
+class CharacterData extends Node {}
+class Comment extends CharacterData {}
+class Text extends CharacterData {}
+
+// elem 继承于 节点类
+class Element extends Node {}
+// 具体元素标签类 则 继承于 元素类
+class HTMLElement extends Element {}
+class HTMLParagraphElement extends HTMLElement {}
+class HTMLDivElement extends HTMLElement {}
+// 其他 elem ...
+```
+
+- HTMLCollection 和 NodeList 都不是数组，而是“类数组”
+  - 使用数组方法前 先转换为数组
+```js
+const arr1 = Array.from(list)
+const arr2 = Array.prototype.slice.call(list)
+const arr3 = [...list] // 推荐
+```
+:::
+
+:::danger 答案
+- HTMLCollection 是 Element 集合
+  - Element 是 html 元素的基类
+  - Element 继承于 Node
+  - 扩1 API `elem.children` `document.getElementsByTagName('p')`
+- NodeList 是 Node 集合
+  - Node 是 DOM 节点的基类
+  - 扩1 `elem.childNodes` `document.querySelectorAll('p')`
+- 相同点 都不是数组，而是“类数组”
+:::
 
 ## 10 Vue computed vs watch
+:::danger 答案
+- computed 就data产出新数据，有缓存。
+  - 用于产出 二次处理后的数据
+- watch 监听已有数据
+  - 用于监听 data具体数据变化
+
+- 举例
+  - 公司员工数据为例 进行 计算/监听
+  - computed 可以得出 程序员总人数 人均工资
+  - watch 可以得出 谁离职 谁入职 根据最新kpi(谁在努力得加薪 谁在偷懒给裁员)
+:::
 
 ## 11 Vue 通讯方式
+:::danger 答案
+- 父子组件 通讯
+    - `props` `emits` `this.$emit`
+    - `$attrs` （也可以通过 `v-bind="$attrs"` 向下级传递）
+    - `$parent` `$refs`
+- 多级组件 上下级
+    - `provide` `inject`
+- 跨级、全局
+    - 自定义事件
+    - Vuex
+:::
 ### 11.1 props-emits 自定义事件
+:::info 直接的上下通讯
+#### 适用于父子组件。
+- 父组件向子组件传递 props 和事件
+- 子组件接收 props ，使用 `this.$emit` 调用事件
+:::
+
+:::info 自定义事件
+#### 适用于兄弟组件，或者“距离”较远的组件。
+- 绑定事件 `event.on(key, fn)` 或 `event.once(key, fn)`
+- 触发事件 `event.emit(key, data)`
+- 解绑事件 `event.off(key, fn)` 有on必有off 完成闭环
+  - 【注意】组件销毁时记得 `off` 事件，否则可能会造成内存泄漏
+
+#### Vue 版本的区别
+- Vue 2.x 可以使用 Vue 实例作为自定义事件
+- Vue 3.x 需要使用第三方的自定义事件，例如 https://www.npmjs.com/package/event-emitter
+:::
+
 ### 11.2 props-$attrs
+- 视频？
+:::info new
+- `$attrs` 存储是父组件中传递过来的，且未在 `props` 和 `emits` 中定义的属性和事件
+- 相当于 `props` 和 `emits` 的一个补充。
+- 继续向下级传递，可以使用 `v-bind="$attrs"`。这会在下级组件中渲染 DOM 属性，可以用 `inheritAttrs: false` 避免。
+- 【注意】Vue3 中移除了 `$listeners` ，合并到了 `$attrs` 中。
+:::
+
 ### 11.3 props-$parents | $refs
+:::info 找关系或建立关系
+#### $parent
+- 通过 `this.$parent` 可以获取父组件，获取其属性、调用其方法等。
+- 【注意】Vue3 中移除了 `$children` ，建议使用 `$refs`
+
+#### $refs
+1. 模板中要设置 `ref="xxx"`。
+2. 通过 `this.$refs.xxx` 获取某个子组件
+3. 【注意】要在挂载完成后 `mounted` 中获取 `this.$refs` ，不能在 `created` 中获取。
+:::
+
 ### 11.4 props-provide | inject
+- 视频？
+:::info 垂直关系
+> 如果是多层级的上下级组件通讯，可以使用 provide 和 inject 
+1. 在上级组件定一个 provide ，
+2. 下级组件即可通过 inject 接收。
+
+- 传递静态数据直接使用 `provide: { x: 10 }` 形式
+- 传递组件数据需要使用 `provide() { return { x: this.xx } }` 形式，但做不到响应式
+- 响应式需要借助 `computed` 来支持
+:::
 
 ## 12 Vuex action vs muation
+:::danger 答案
+- mutation
+    - 建议原子操作，每次只修改一个数据，不要贪多
+    - 必须是同步代码，方便查看 devTools 中的状态变化
+- action
+    - 可包含多个 mutation
+    - 可以是异步操作
+:::
 
 ## 13 JS 严格模式
+:::info 介绍
+- `'use strict'` 在当前作用域 开启严格模式
+- Javascript 设计之初，有很多不合理、不严谨、不安全之处
+- 现在 ES 规范已经普及，已规避了这些问题
+- 一般开发环境用 ES语法规范 或者 Typescript语法规范，而打包的 js 代码使用严格模式
+:::
+
+:::danger 常用细则
+- 全局变量必须声明
+- 禁止使用 with
+- 创建 eval 作用域
+- 禁止 this 指向全局作用域
+- 函数参数 不能重名
+:::
 
 ## 14 Http
 > HTTP跨域时为何要发送options请求
+- 视频？
+
+:::info 背景知识
+#### 跨域
+浏览器同源策略，默认限制跨域请求。跨域的解决方案
+- jsonp
+  - img link script
+- CORS 
+  - Cross Origin Resouce Sharing 跨预资源共享
+
+```js
+// CORS 配置允许跨域（服务端）
+response.setHeader("Access-Control-Allow-Origin", "http://localhost:8011") // 或者 '*'
+response.setHeader("Access-Control-Allow-Headers", "X-Requested-With")
+response.setHeader("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS")
+response.setHeader("Access-Control-Allow-Credentials", "true") // 允许跨域接收 cookie
+```
+
+#### options 请求
+
+该请求就是为了检查服务端的 headers 信息，是否符合客户端的预期。所以它没有 body 的返回。
+
+> 规范要求，对那些可能对服务器数据产生副作用的 HTTP 请求方法（特别是 GET 以外的 HTTP 请求，或者搭配某些 MIME 类型的 POST 请求），浏览器必须首先使用 OPTIONS 方法发起一个预检请求（preflight request），从而获知服务端是否允许该跨域请求。—— MDN
+:::
+
+:::danger 答案
+options 请求就是对 CORS 跨域请求之间的一次预检查，检查成功再发起正式请求，是浏览器自行处理的。
+:::
 
 ## 15 Restful API
 :::danger 总结
