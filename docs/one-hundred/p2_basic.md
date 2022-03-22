@@ -240,8 +240,87 @@ function ajax(url) {
 :::
 
 ### 7.2 for-await-of
-- 视频？ 
->遍历的每个value为promise对象
+
+> 核心还是ES7的 async await
+
+:::tip 知识扩展
+<Tabs>
+<TabItem value="pro" label="模拟Promise对象">
+
+> 定义一个创建 promise 的函数
+
+```js
+function createTimeoutPromise(val) {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve(val)
+        }, 1000)
+    })
+}
+```
+
+</TabItem>
+<TabItem value="simple" label="简单逻辑">
+
+> 明确知道有几个 promise 对象，那直接处理即可
+
+```js
+(async function () {
+    // 创建了 promise 对象，它就立刻开始执行逻辑
+    const p1 = createTimeoutPromise(10)  // p 是 promise
+    const p2 = createTimeoutPromise(20)
+
+    const v1 = await p1 // v 是 p的成功 value
+    console.log(v1)
+    const v2 = await p2
+    console.log(v2)
+})()
+```
+
+</TabItem>
+<TabItem value="axios" label="for awiat of">
+
+> 一个数组，里面有 N 个 promise 对象
+
+```js
+(async function () {
+    // 多个Pomise对象组成的数组
+    const list = [createTimeoutPromise(10),createTimeoutPromise(20)]
+
+    // 第一，使用 Promise.all 执行
+    Promise.all(list).then(res => console.log(res))
+
+    // 第二，使用 for await ... of 遍历执行
+    for await (let p of list) {
+        console.log(p)
+    }
+
+    // 注意，如果用 for...of 只能遍历出各个 promise 对象，而不能触发 await 执行
+})()
+```
+
+</TabItem>
+<TabItem value="order" label="按顺序执行">
+
+> 按顺序执行，必须延迟创建 promise 对象
+
+```js
+(async function () {
+    const v1 = await createTimeoutPromise(10)
+    console.log(v1)
+    const v2 = await createTimeoutPromise(20)
+    console.log(v2)
+
+    for (let n of [100, 200]) {
+        const v = await createTimeoutPromise(n)
+        console.log('v', v)
+    }
+})()
+```
+
+</TabItem>
+</Tabs>
+:::
 
 
 ## 8 offset | scroll | cilent + Height
@@ -250,38 +329,23 @@ function ajax(url) {
 :::danger 区别
 - offsetHeight -> border + padding + content
 - clientHeight -> padding + content
-- scrollHeight -> padding + 实际内容的高度
-- scrollTop DOM 内部元素滚动的距离
+- scrollHeight -> padding + 实际内容的高度(出现滚动条)
+  - 容器的实际内容 大于 容器content 会出现滚动条
+  - scrollHeight >= clientHeight
+  - scrollTop 内部元素 在其容器中的滚动距离
 :::
 
 ## 9 HTMLCollection vs NodeList
 :::info 基础
-- DOM 结构是一棵树，树的所有节点都是 `Node` 
+- DOM 结构是一棵树，其节点都是 `Node` 
   - 包括：document，元素，文本，注释，fragment 等
-- `Element` 继承于 Node 是 html 元素的基类
+- Element类 继承于 Node类
+- html 具体元素 继承于 Element类
 
-```js
-// 节点类
-class Node {}
+![node_tree](/img/onehundren/node_tree.webp)
+:::
 
-// document 继承于 节点类
-class Document extends Node {}
-class DocumentFragment extends Node {}
-
-// 文本和注释 继承于 节点类
-class CharacterData extends Node {}
-class Comment extends CharacterData {}
-class Text extends CharacterData {}
-
-// elem 继承于 节点类
-class Element extends Node {}
-// 具体元素标签类 则 继承于 元素类
-class HTMLElement extends Element {}
-class HTMLParagraphElement extends HTMLElement {}
-class HTMLDivElement extends HTMLElement {}
-// 其他 elem ...
-```
-
+:::caution 不是数组
 - HTMLCollection 和 NodeList 都不是数组，而是“类数组”
   - 使用数组方法前 先转换为数组
 ```js
@@ -298,6 +362,7 @@ const arr3 = [...list] // 推荐
   - 扩1 API `elem.children` `document.getElementsByTagName('p')`
 - NodeList 是 Node 集合
   - Node 是 DOM 节点的基类
+  - 包括 Element 文本 注释等
   - 扩1 `elem.childNodes` `document.querySelectorAll('p')`
 - 相同点 都不是数组，而是“类数组”
 :::
@@ -308,12 +373,13 @@ const arr3 = [...list] // 推荐
   - 用于产出 二次处理后的数据
 - watch 监听已有数据
   - 用于监听 data具体数据变化
-
-- 举例
-  - 公司员工数据为例 进行 计算/监听
-  - computed 可以得出 程序员总人数 人均工资
-  - watch 可以得出 谁离职 谁入职 根据最新kpi(谁在努力得加薪 谁在偷懒给裁员)
 :::
+:::caution 扩展
+- computed 有缓存，data 不变则缓存不失效
+- methods 无缓存，实时计算
+- 在使用 二次处理的数据上 computed效率更高
+:::
+
 
 ## 11 Vue 通讯方式
 :::danger 答案
@@ -321,7 +387,7 @@ const arr3 = [...list] // 推荐
     - `props` `emits` `this.$emit`
     - `$attrs` （也可以通过 `v-bind="$attrs"` 向下级传递）
     - `$parent` `$refs`
-- 多级组件 上下级
+- 多级组件 上下级 垂直关系
     - `provide` `inject`
 - 跨级、全局
     - 自定义事件
@@ -335,11 +401,12 @@ const arr3 = [...list] // 推荐
 :::
 
 :::info 自定义事件
-#### 适用于兄弟组件，或者“距离”较远的组件。
+#### 适用于兄弟组件，或者“距离”较远的同模块下组件。
 - 绑定事件 `event.on(key, fn)` 或 `event.once(key, fn)`
 - 触发事件 `event.emit(key, data)`
 - 解绑事件 `event.off(key, fn)` 有on必有off 完成闭环
   - 【注意】组件销毁时记得 `off` 事件，否则可能会造成内存泄漏
+  - 【注意】fn为具体函数 不能用箭头函数
 
 #### Vue 版本的区别
 - Vue 2.x 可以使用 Vue 实例作为自定义事件
@@ -347,10 +414,9 @@ const arr3 = [...list] // 推荐
 :::
 
 ### 11.2 props-$attrs
-- 视频？
 :::info new
 - `$attrs` 存储是父组件中传递过来的，且未在 `props` 和 `emits` 中定义的属性和事件
-- 相当于 `props` 和 `emits` 的一个补充。
+- 相当于 `props` 和 `emits` 的一个补充/候补。
 - 继续向下级传递，可以使用 `v-bind="$attrs"`。这会在下级组件中渲染 DOM 属性，可以用 `inheritAttrs: false` 避免。
 - 【注意】Vue3 中移除了 `$listeners` ，合并到了 `$attrs` 中。
 :::
@@ -358,31 +424,30 @@ const arr3 = [...list] // 推荐
 ### 11.3 props-$parents | $refs
 :::info 找关系或建立关系
 #### $parent
-- 通过 `this.$parent` 可以获取父组件，获取其属性、调用其方法等。
+- 通过 `this.$parent` 可以获取父组件(属性和方法)
 - 【注意】Vue3 中移除了 `$children` ，建议使用 `$refs`
 
 #### $refs
-1. 模板中要设置 `ref="xxx"`。
-2. 通过 `this.$refs.xxx` 获取某个子组件
+1. 子组件 设置 `ref="xxx"`。
+2. 通过 `this.$refs.xxx` 获取某个子组件(属性和方法)
 3. 【注意】要在挂载完成后 `mounted` 中获取 `this.$refs` ，不能在 `created` 中获取。
 :::
 
 ### 11.4 props-provide | inject
-- 视频？
 :::info 垂直关系
 > 如果是多层级的上下级组件通讯，可以使用 provide 和 inject 
 1. 在上级组件定一个 provide ，
 2. 下级组件即可通过 inject 接收。
 
-- 传递静态数据直接使用 `provide: { x: 10 }` 形式
+- 传递静态数据直接使用 `provide: { x: 10 }` 形式 只读模式
 - 传递组件数据需要使用 `provide() { return { x: this.xx } }` 形式，但做不到响应式
-- 响应式需要借助 `computed` 来支持
+- 响应式需要借助 `computed` `provide() { return { x: computed(()=>this.xx)}}` 形式
 :::
 
 ## 12 Vuex action vs muation
 :::danger 答案
 - mutation
-    - 建议原子操作，每次只修改一个数据，不要贪多
+    - 原子操作(规范)，每次只修改一个数据
     - 必须是同步代码，方便查看 devTools 中的状态变化
 - action
     - 可包含多个 mutation
@@ -394,26 +459,34 @@ const arr3 = [...list] // 推荐
 - `'use strict'` 在当前作用域 开启严格模式
 - Javascript 设计之初，有很多不合理、不严谨、不安全之处
 - 现在 ES 规范已经普及，已规避了这些问题
-- 一般开发环境用 ES语法规范 或者 Typescript语法规范，而打包的 js 代码使用严格模式
+- 一般开发环境用 ES语法规范 或者 Typescript语法规范，
+- 生产环境用的 js 代码使用严格模式
 :::
 
 :::danger 常用细则
 - 全局变量必须声明
+  - 禁止 污染全局环境
 - 禁止使用 with
+  - `with(obj){}` 作用域直接取obj属性
+  - 禁止 不符合规范的写代码
 - 创建 eval 作用域
+  - 运行字符串代码
+  - 但不推荐使用 eval
 - 禁止 this 指向全局作用域
+  - 全局会指向window 
+  - 禁用后 是 undifined
 - 函数参数 不能重名
 :::
 
 ## 14 Http
 > HTTP跨域时为何要发送options请求
-- 视频？
 
 :::info 背景知识
-#### 跨域
-浏览器同源策略，默认限制跨域请求。跨域的解决方案
+>浏览器同源策略，默认限制跨域请求。
+
+#### 跨域的解决方案
 - jsonp
-  - img link script
+  - img link script iframe
 - CORS 
   - Cross Origin Resouce Sharing 跨预资源共享
 
@@ -433,7 +506,8 @@ response.setHeader("Access-Control-Allow-Credentials", "true") // 允许跨域�
 :::
 
 :::danger 答案
-options 请求就是对 CORS 跨域请求之间的一次预检查，检查成功再发起正式请求，是浏览器自行处理的。
+- options 请求就是对 CORS 跨域请求之间的一次预检查
+- 检查成功再发起正式请求，是浏览器自行处理的。
 :::
 
 ## 15 Restful API

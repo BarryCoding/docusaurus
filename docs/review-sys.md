@@ -64,6 +64,7 @@ import TabItem from '@theme/TabItem';
 - March 22 Mars
   - 成真100 先整理文档 效率提升大
   - 成真100 昨天复习 完成
+  - 成真100 完成 基础知识
 
 </TabItem>
 <TabItem value="apr" label="4月">
