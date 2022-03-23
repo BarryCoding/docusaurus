@@ -213,13 +213,13 @@ function ajax(url) {
 
 :::tip 点外卖 结合 理论
 #### 3握手
-1. 用户点开周黑鸭外卖app 商家需确定用户在送餐区域才提供服务
-2. 用户确定 商家现在可以给我送餐 
+1. 用户点开周黑鸭外卖app 商家需确定用户的送餐地址 是真人信息
+2. 用户确定 商家的送餐时间 商家信息真实可信
 3. 用户准备下单 点单放入购物车 商家需准备处理 用户订单
 
 #### 4挥手
-1. 用户下单 鸭脖10份 点击支付宝完成付款 用户完成订单
-2. app回馈 已经收到货款 鸭脖10份 备餐中请稍等
+1. 用户对购物车执行下单 并用支付宝完成付款 用户完成订单
+2. app回馈 已经收到货款 备餐中请稍等
 3. 一会后 app回馈 快递员已取餐 在路上了 已寄出外卖
 4. 用户收到外卖 给5分评价 订单完成 商家确定收到用户取餐结果
 :::
@@ -229,9 +229,11 @@ function ajax(url) {
 ### 7.1 for-in | for of
 :::danger 区别
 - for...in 遍历 key , for...of 遍历 value
-- for...in 遍历一个对象的“可枚举属性 enumerable”，如对象、数组、字符串。针对属性，所以获得 key
+- for...in 遍历一个对象的“可枚举属性 enumerable”，
+  - 如对象、数组、字符串。针对属性，所以获得 key
   - 原理 `Object.getOwnPropertyDescriptors(obj)` 对象的属性描述 `enumerable: true`
-- for...of 遍历一个“可迭代对象 Symbol.iterator”，如数组、字符串、Map/Set 。针对一个迭代对象，所以获得 value
+- for...of 遍历一个“可迭代对象 Symbol.iterator”，
+  - 如数组、字符串、Map/Set 。针对一个迭代对象，所以获得 value
   - 原理 `arr[Symbol.iterator]` 迭代器模式，通过一个 `next` 方法返回下一个元素
   - 如 `arguments` `NodeList` `Map` `Set`
 - 数组方法用不了 map函数/foreach函数 
@@ -329,7 +331,7 @@ function createTimeoutPromise(val) {
 :::danger 区别
 - offsetHeight -> border + padding + content
 - clientHeight -> padding + content
-- scrollHeight -> padding + 实际内容的高度(出现滚动条)
+- scrollHeight -> padding + 实际内容的高度(内容大导致出现滚动条)
   - 容器的实际内容 大于 容器content 会出现滚动条
   - scrollHeight >= clientHeight
   - scrollTop 内部元素 在其容器中的滚动距离
@@ -357,11 +359,11 @@ const arr3 = [...list] // 推荐
 
 :::danger 答案
 - HTMLCollection 是 Element 集合
-  - Element 是 html 元素的基类
+  - Element 是 html `元素`的基类
   - Element 继承于 Node
   - 扩1 API `elem.children` `document.getElementsByTagName('p')`
 - NodeList 是 Node 集合
-  - Node 是 DOM 节点的基类
+  - Node 是 DOM `节点`的基类
   - 包括 Element 文本 注释等
   - 扩1 `elem.childNodes` `document.querySelectorAll('p')`
 - 相同点 都不是数组，而是“类数组”
@@ -387,7 +389,7 @@ const arr3 = [...list] // 推荐
     - `props` `emits` `this.$emit`
     - `$attrs` （也可以通过 `v-bind="$attrs"` 向下级传递）
     - `$parent` `$refs`
-- 多级组件 上下级 垂直关系
+- 多级组件 上下级 垂直关系不跨模块
     - `provide` `inject`
 - 跨级、全局
     - 自定义事件
@@ -456,10 +458,10 @@ const arr3 = [...list] // 推荐
 
 ## 13 JS 严格模式
 :::info 介绍
-- `'use strict'` 在当前作用域 开启严格模式
+- `'use strict'` 在对应的作用域 开启严格模式
 - Javascript 设计之初，有很多不合理、不严谨、不安全之处
 - 现在 ES 规范已经普及，已规避了这些问题
-- 一般开发环境用 ES语法规范 或者 Typescript语法规范，
+- 一般开发环境用 ES语法规范 或者 Typescript语法规范，代码写整洁规范一些(程序员的自我修养)
 - 生产环境用的 js 代码使用严格模式
 :::
 
@@ -500,7 +502,8 @@ response.setHeader("Access-Control-Allow-Credentials", "true") // 允许跨域�
 
 #### options 请求
 
-该请求就是为了检查服务端的 headers 信息，是否符合客户端的预期。所以它没有 body 的返回。
+- 该请求就是为了检查服务端的 headers 信息，是否符合客户端的预期。所以它没有 body 的返回。 
+- Options翻译就是选项的意思，浏览器查看一下服务区提供哪些选项，更合理的按选项发送请求。
 
 > 规范要求，对那些可能对服务器数据产生副作用的 HTTP 请求方法（特别是 GET 以外的 HTTP 请求，或者搭配某些 MIME 类型的 POST 请求），浏览器必须首先使用 OPTIONS 方法发起一个预检请求（preflight request），从而获知服务端是否允许该跨域请求。—— MDN
 :::
