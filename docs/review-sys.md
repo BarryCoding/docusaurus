@@ -70,6 +70,9 @@ import TabItem from '@theme/TabItem';
   - 成真100 上善若水(篇) 文档整理
   - 成真100 血轮眼开 文档结构初步整理
   - 成真100 上善若水 完成 独立思考 部分处理
+- Merch 24 Jupitor
+  - 成真100 昨日 为人篇 破解篇 复习 09:57am
+  - 成真100 
 
 </TabItem>
 <TabItem value="apr" label="4月">
