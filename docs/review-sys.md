@@ -72,7 +72,7 @@ import TabItem from '@theme/TabItem';
   - 成真100 上善若水 完成 独立思考 部分处理
 - Merch 24 Jupitor
   - 成真100 昨日 为人篇 破解篇 复习 09:57am
-  - 成真100 
+  - 成真100 设计篇 文档整理 1/2 
 
 </TabItem>
 <TabItem value="apr" label="4月">
