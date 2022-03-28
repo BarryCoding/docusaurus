@@ -58,6 +58,35 @@ parseInt('3', 2) // NaN ，2 进制中没有 3
 ```
 :::
 
+## 函数参数
+> 函数参数是`赋值传递`
+
+:::danger 以下代码，执行会输出什么
+```js
+function changeArg(x) { 
+    x = 200 // 函数参数重新赋值
+}
+
+function changeArgProp(x) {
+    x.name = '张三' // 函数参数指向同一个对象 有副作用
+}
+
+let num = 100
+changeArg(num) // 函数参数相当于 let x = num 
+console.log('changeArg num', num)
+
+let obj = { name: '双越' }
+changeArg(obj) // 函数参数相当于 let x = obj
+console.log('changeArg obj', obj)
+
+changeArgProp(obj) // 函数参数相当于 let x = obj
+console.log('changeArgProp obj', obj)
+```
+:::
+:::tip eslint
+- 规范 将`函数参数作为常量`不进行修改
+:::
+
 ## 数组转树
 :::note
 > 定义一个 `convert` 函数，将以下数组转换为树结构。
@@ -323,7 +352,7 @@ Promise.resolve().then(() => {
 :::
 
 ## React setState
-- 在 前端框架中
+- 回顾 [前端框架-React-SetState](../interview-framework/react/app/basic.md#setState)
 
 :::danger 以下代码，执行会输出什么
 ```js
@@ -334,18 +363,13 @@ class Example extends React.Component {
     }
   
     componentDidMount() {
-      // this.state.val 初始值是 0 
-
       this.setState({val: this.state.val + 1})
       console.log(this.state.val)
-  
       this.setState({val: this.state.val + 1})
       console.log(this.state.val)
-  
       setTimeout(() => {
         this.setState({val: this.state.val + 1})
         console.log(this.state.val)
-  
         this.setState({val: this.state.val + 1})
         console.log(this.state.val)
       }, 0)
@@ -358,8 +382,18 @@ class Example extends React.Component {
 ```
 :::
 
+:::tip 答案
+题目代码执行打印 `0 0 2 3`
+:::
+
 ### setState 宏任务/微任务
-- 好好看 好好学
+:::tip
+- setState 是同步执行 state是同步更新 
+  - 多次state修改会合并 只进行一次DOM渲染
+  - 看似是异步的样子 其实是react内部aop处理将 setState放在了最后执行
+- 在微任务 Promise.then 开始前 state已经合并计算完了
+- 同步 不是微业务或宏任务
+:::
 
 ## 对象赋值
 :::danger 以下代码，执行会输出什么
@@ -371,6 +405,15 @@ a.x = a = { n: 2 }
 console.log(a.x) 	
 console.log(b.x)
 ```
+:::
+
+:::info 重点
+1. 值类型(栈)与引用类型(堆栈)
+2. a.x 比赋值的优先级高
+3. 日常工作不推荐连续赋值 可读性差
+
+![](/img/onehundren/heap_stack.png)
+
 :::
 
 
@@ -399,46 +442,28 @@ console.log(a[b])
 ```
 :::
 
-## 函数参数
-> 函数参数是`赋值传递`
-
-:::danger 以下代码，执行会输出什么
-```js
-function changeArg(x) { 
-    x = 200 // 函数参数重新赋值
-}
-
-function changeArgProp(x) {
-    x.name = '张三' // 函数参数指向同一个对象 有副作用
-}
-
-let num = 100
-changeArg(num) // 函数参数相当于 let x = num 
-console.log('changeArg num', num)
-
-let obj = { name: '双越' }
-changeArg(obj) // 函数参数相当于 let x = obj
-console.log('changeArg obj', obj)
-
-changeArgProp(obj) // 函数参数相当于 let x = obj
-console.log('changeArgProp obj', obj)
-```
-:::
-:::tip eslint
-- 规范 将`函数参数作为常量`不进行修改
+:::info JS对象key的数据类型
+- 对象的key 只能是字符串和 Symbol 类型
+  - 每个Symbol都是唯一的不会覆盖
+- 其他类型的键名会被转换成字符串类型
+  - 对象转字符串默认会调用 `toString` 方法  '[object Object]'
 :::
 
-## 解题常见思路
+:::tip 答案
+题目代码执行分别打印 `'c' 'b' 'c'`
+:::
 
-### 举例
+## 扩展解题思路
+
+#### 举例
 > 如果没有示例，你可以举几个示例让面试官确认，这样可以保证自己理解正确。
 
 - 例如“数组转树”和“树转数组”两个问题，可以举几个例子。对比输入和输出，即可找出变化的规律。
 
-### 画图
+#### 画图
 > 遇到抽象的问题，画图，把抽象变形象，更容易找出突破口。
 
-### 拆解
+#### 拆解代码
 > 把代码拆解到最细的力度，就很容易定位问题
 
 例如 `['1', '2', '3'].map(parseInt)` 
@@ -451,7 +476,7 @@ const res = arr.map((s, index) => {
 console.log(res)
 ```
 
-### 本质
+#### 识破本质
 > 不要被复杂的表象所迷惑，要尝试去找出问题的本质考点。
 
 例如下面对象属性赋值的问题，考点就是对象 key 的数据类型。
