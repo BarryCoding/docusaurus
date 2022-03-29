@@ -68,16 +68,14 @@ import TabItem from '@theme/TabItem';
   - 及时报警的机制。
 
 ## 前端统计 sdk
-> 让我设计一个前端统计 SDK ，你会如何设计？
-
-- 难啃的骨头 我来处理
+> 让我设计一个前端统计 SDK ，你会如何设计？ Software Development Kit
 
 :::info 分析
 #### 前端统计的范围
-- 访问量 PV
-- 自定义事件（如统计一个按钮被点击了多少次）
-- 性能
-- 错误
+- 访问量 PV(Page-View)
+- 自定义事件（如统计某个按钮被点击了多少次 确定/取消/退出）
+- 性能 性能耗时
+- 错误 统计错误 减少错误
 
 #### 统计数据的流程 （只做前端 SDK ，但是要了解全局）
 - 前端发送统计数据给服务端
@@ -85,15 +83,16 @@ import TabItem from '@theme/TabItem';
 - 查看统计结果
 :::
 
-- tab 化
-####  代码结构
+:::tip SDK解析
+<Tabs>
+<TabItem value="sdk" label="SDK结构">
 
-SDK 要用于多个不同的产品，所以初始化要传入 `productId`
+> SDK 要用于多个不同的产品，所以初始化要传入 `productId`
 
 ```js
+// SDK
 class MyStatistic {
     private productId: number
-
     constructor(productId: number = 0) {
         if (productId <= 0) {
             throw new Error('productId is invalid')
@@ -103,40 +102,34 @@ class MyStatistic {
         this.initPerformance() // 性能统计
         this.initError() // 监听错误
     }
-    private send(url: string, paramObj: object = {}) {
-        // TODO 发送统计数据
-    }
-    private initPerformance() {
-        // TODO 性能统计
-    }
-    private initError() {
-        // TODO 监听全局错误（有些错误需要主动传递过来，如 Vue React try-catch 的）
-    }
-    pv() {
-        // TODO 访问量 PV 统计
-    }
-    event(key: string, value: string) {
-        // TODO 自定义事件
-    }
-    error(key: string, info: object = {}) {
-        // TODO 错误统计
-    }
+    // 发送 统计数据
+    private send(url: string, paramObj: object = {}) {}
+    // 自定义事件 发送数据
+    event(key: string, value: string) {}
+    // 访问量 PV 一个特殊的自定义事件
+    pv() {}
+    // 初始化 性能统计
+    private initPerformance() {}
+    // 初始化 监听错误
+    private initError() {}
+    // 错误统计 结合Vue/React的报错
+    error(key: string, info: object = {}) {}
 }
-```
 
-用户使用
-
-```js
+// 使用SDK
 const myStatistic = new MyStatistic('abc')
 ```
 
-####  发送数据
+</TabItem>
+<TabItem value="send" label="发送统计">
 
-发送统计数据，用 `<img>` —— 浏览器兼容性好，没有跨域限制
+> 发送统计数据，用 `<img>` 1浏览器兼容性好 2没有跨域限制
+
+> 再精细一点的优化，`send` 中可以使用 `requestIdleCallback` （兼容使用 `setTimeout`）
 
 ```js
 private send(url: string, paramObj: object = {}) {
-    // 追加 productId
+    // 追加 productId 区分不同的产品线
     paramObj.productId = this.productId
 
     // params 参数拼接为字符串
@@ -147,77 +140,74 @@ private send(url: string, paramObj: object = {}) {
     }
 
     const img = document.createElement('img')
-    img.src = `${url}?${paramArr.join('&')}`
+    img.src = `${url}?${paramArr.join('&')}` // 路径拼接
 }
 ```
 
-如果再精细一点的优化，`send` 中可以使用 `requestIdleCallback` （兼容使用 `setTimeout`）
+</TabItem>
+<TabItem value="event" label="自定义事件">
 
-####  自定义事件统计
+> 自定义事件统计 将用户的操作 统计发送
 
 ```js
 event(key: string, value: string) {
     const url = 'xxx' // 接受自定义事件的 API
-    this.send(url, { key, value }) // 发送
+    this.send(url, { key, value }) // 发送 具体执行的操作类型与值(key:value)
 }
 ```
 
-用户使用
+#### 用户使用 按钮点击统计发送
 
 ```js
 // 如需要统计“同意” “不同意” “取消” 三个按钮的点击量，即可使用自定义事件统计
 $agreeBtn.click(() => {
     // ...业务逻辑...
-    myStatistic.event('some-button', 'agree') // 其他不同的按钮，传递不同的 value (如 'refuse' 'cancel')
+    // 其他不同的按钮，传递不同的 value (如 'refuse' 'cancel')
+    myStatistic.event('ad-button', 'agree') 
 })
 ```
 
-####  访问量 PV
+</TabItem>
+<TabItem value="pv" label="访问量">
 
-PV 可以通过自定义事件的方式。但是为了避免用户重复发送，需要加一个判断
+> PV 访问量 一种特殊的自定义事件的方式。但是为了避免用户重复发送，需要加一个判断
 
 ```js
-// 定义一个全局的 Set ，记录已经发送 pv 的 url
+// 定义一个全局的 Set ，记录已经发送 pv 的 url; 避免重复发送pv
 const PV_URL_SET = new Set()
 ```
-
 ```js
 pv() {
-    const href = location.href
-    if (PV_URL_SET.has(href)) return
-
-    this.event('pv', '') // 发送 pv
-
-    PV_URL_SET.add(href)
+    const href = location.href // 1 获取当前路由进入的页面
+    if (PV_URL_SET.has(href)) return // 4 不重复发送pv
+    this.event('pv', '') // 2 发送 pv
+    PV_URL_SET.add(href) // 3 发送完 pv 就记录到set中
 }
 ```
-
-用户使用
-
 ```js
-myStatistic.pv()
+myStatistic.pv() //用户使用
 ```
+> PV 统计需要让用户自己发送吗，能不能在 DOMContentLoaded 时自动发送？
+> 最好让用户发送，因为 SPA 中切换路由也可能发送 PV
 
-【注意】PV 统计需要让用户自己发送吗，能不能在 DOMContentLoaded 时自动发送？—— 最好让用户发送，因为 SPA 中切换路由也可能发送 PV
+</TabItem>
+<TabItem value="performance" label="性能统计">
 
-####  性能统计
-
-通过 `console.table( performance.timing )` 可以看到网页的各个性能
-
-<!-- ![](./img/performance.png) -->
+> 通过 `console.table( performance.timing )` 可以看到网页的各个性能。统计尽量要最原始数据，不加工处理 全部传给服务端，让服务端去计算结果  
 
 ```js
 private initPerformance() {
     const url = 'yyy' // 接受性能统计的 API
-    this.send(url, performance.timing) // 全部传给服务端，让服务端去计算结果 —— 统计尽量要最原始数据，不要加工处理
+    this.send(url, performance.timing) 
+    // 
 }
 ```
+> 想要得到全面的性能数据，要在网页加载完成之后（ DOMContentLoaded 或 onload ）去初始化 `myStatistic`
 
-PS：想要得到全面的性能数据，要在网页加载完成之后（ DOMContentLoaded 或 onload ）去初始化 `myStatistic`
+</TabItem>
+<TabItem value="err" label="错误统计">
 
-####  错误统计
-
-监听全局操作
+> 监听全局操作
 
 ```js
 private initError() {
@@ -233,22 +223,21 @@ private initError() {
 }
 ```
 
-被开发这主动收集的错误，需要调用 API 来统计
+> 被开发这主动收集的错误，需要调用 API 来统计
 
 ```js
 error(error: Error, info: object = {}) {
     // error 结构 { message, stack }
     // info 是附加信息
-
     const url = 'zzz' // 接受错误统计的 API
     this.send(url, Object.assign(error, info))
 }
 ```
 
-用户使用
+> 用户使用 错误监听
 
 ```js
-// try catch
+// try catch 中的报错
 try {
     100()
 } catch (e) {
@@ -266,11 +255,10 @@ componentDidCatch(error, errorInfo) {
 }
 ```
 
-:::danger 总结
-- 自定义事件（包括 PV）
-- 性能统计
-- 报错统计
+</TabItem>
+</Tabs>
 :::
+
 
 ### 连环问：sourcemap
 > sourcemap 有什么作用？该如何配置

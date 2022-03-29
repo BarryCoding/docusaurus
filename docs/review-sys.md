@@ -78,7 +78,8 @@ import TabItem from '@theme/TabItem';
   - 成真100 昨日 设计篇 速看 10:04
   - 成真100 破解篇 文档完善 1/2
 - March 28 Moon
-  - 成真100 破解篇 文档完善 1/2
+  - 成真100 破解篇 文档完善 2/2 完成
+  - 成真100 设计篇 文档完善 1/3
 
 </TabItem>
 <TabItem value="apr" label="4月">
