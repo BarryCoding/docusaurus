@@ -2,34 +2,123 @@
 sidebar_position: 0
 ---
 
-# 简历页面（准备）
+# 简历-Springer
 
-Let's discover **Docusaurus in less than 5 minutes**.
+## 个人信息
 
-## Getting Started
+| 姓名：Springer         | 性别：男                             |
+| ------------------- | -------------------------------- |
+| 籍贯：湖北武汉             | **年龄：33 (6年开发经验)**               |
+| 在菲电话：9279207811     | 个人邮箱：springercodebarry@gmail.com |
+| **申请岗位：高级前端开发**     | 签证状态：旅游签 已离职已降签                  |
+| 工作性质：全职 / 兼职 / 自由签约 | 入职时间：2022年5月                     |
 
-Get started by **creating a new site**.
+## 前端技能
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+- 精通 CSS3 / Sass / 布局系统 移动端适配 / 响应式布局 / flex布局/ grid布局
+- 熟悉 json数据格式 / ajax / fetch / axios / async+await 实现前后端数据交互
+- 熟悉 前后端分离 接口开发模式, Postman接口测试, RESTful API
+- 熟悉 React框架 react + react-router + redux + react-redux + redux-thunk + immutable.js
+- 熟悉 Vue框架 vue + vue-router + vuex + scss
+- 熟悉 Webpack配置 实现性能优化
+- 熟悉UI框架 mint-ui / vant-ui / lay-ui / element-ui / Ant-design
+- 熟悉 Typescript 静态类型 语法规范
+- 了解 后端与数据库 Java + Mysql / Nodejs + MongoDB / Php + Mysql
 
-## Generate a new site
+## 主要职能
 
-Generate a new Docusaurus site using the **classic template**:
+- 疫情期间远程办公，已适应远程办公方式
+- 根据产品需求与UI原型完成移动端和PC端产品的功能组件开发
+- 与产品和设计沟通协作，对接后端工程师完成API接口联调
+- 持续迭代交互细节，编写相关技术文档
+- 根据测试人员反馈，分析修改bug，持续提升性能和用户体验
+- 研究前沿前端技术，为项目提供迭代与重构方案
 
-```shell
-npm init docusaurus@latest my-website classic
-```
+## 工作经历
 
-## Start your site
+| 工作时间 （年限）                 | 工作单位               |
+| ------------------------- | ------------------ |
+| 2019.10 - 2021.11 （2年以上）  | 菲律宾 Acstream       |
+| 2015.7 - 2019.9    （4年以上） | 广州万户网络技术有限公司 深圳分公司 |
 
-Run the development server:
+## 项目经验 最近5个项目
 
-```shell
-cd my-website
+#### Acstream 2020.10 - 2021.11 `新平台开发与老平台维护 TOC`
 
-npx docusaurus start
-```
+> 项目描述：新平台换肤，按新需求开发组件；及时处理线上bug；教导新人技术规范，管理项目进度，书写前端项目管理文档等。
 
-Your site starts at `http://localhost:3000`.
+#### 项目职责：
 
-Open `docs/intro.md` and edit some lines: the site **reloads automatically** and displays your changes.
+- 在任务周期内，完成新平台样式换肤工作
+- 对旧的样式与部分冗余的逻辑，进行样式结构优化与组件抽取
+- 补充新模块功能如: 信用钱包，优惠券，体育盘报表
+- 帮助前端新人熟悉项目，拆分并分配项目业务，督促新人完成工作
+- 将项目业务与工作职能进行文档化管理
+
+#### 技术要点：React全家桶，AntD 实现新业务逻辑，项目管理与规范
+
+#### Acstream 2019.10 - 2020.10  `金流后台系统 TOB`
+
+> 项目描述：单独负责后台系统，实现资管新需求，开发银行卡与盾的线上管理页面。
+
+#### 项目职责：
+
+- 维护银行卡与用户详情页，并通过权限控制可见与可控内容
+- 维护银行卡与盾的table列表页面，优化前端查询逻辑 并美化展示效果
+- 维护和优化银行卡审核工作流相关的form表单审批等页面
+- 独立负责后台系统
+
+#### 技术要点：Vue全家桶，Element-UI 处理表单表格
+
+#### 万户网络 2019.2 - 2019.8   `1919吃喝 TOC`
+
+> 项目描述：1919吃喝依托庞大的酒类及相关快消品“零售+店配”网络体系，打造“订酒+订餐+订服务”的专业宴请服务平台，满足客户多元化，个性化的服务需求。
+
+#### 项目职责：
+
+- 通过react高阶函数lazy和suspend组件进行封装对路由组件进行懒加载处理
+- 依新需求封装专栏组件，补充超级会员，品牌精选专栏，修改页面布局
+- 完成618，准备中秋节分支页面及相关组件
+- 补充商品详情页功能：品牌商品标签组件和品牌商家资质组件
+- 处理新数据到对应actionCreator，reducer 和 通信的组件中
+
+#### 技术要点：react, AntD, styled-component, redux, react-redux,中间件react-thunk, axios, 配置setupProxy.js反向代理， immtable.js + pureComponent
+
+#### 万户网络 2018.4 - 2019.1  `英语读书-双语名著 TOC`
+
+> 项目描述：英语读书提供英文经典读物和英语图书资讯内容。具有丰富的图书资源，支持加入书架，加入书签，支持下载后离线阅读；可记录读书笔记与加入单词本功能，便于单词复习。
+
+#### 项目职责：
+
+- 根据epub.js处理epub格式的电子书资源在组件中渲染
+- 对axios进行封装，拦截请求和响应
+- 请求时打开加载提示（Toast组件），代理路径作为请求url前缀，公共参数token
+- 响应时关闭加载提示，根据响应的状态码（res.data.code）判断权限，并给予提示
+- 添加主题，字号设置和书签功能；字体设置为静态资源，根据选择进行字体资源重加载
+- 根据用户id，将相关此用户配置的阅读偏好存储到localStorage
+
+#### 技术要点：Vue全家桶, epubjs应用, axios处理请求拦截, Scss预处理, localStorage
+
+#### 万户网络 2017.6 - 2018.3  `1号单车后台系统 TOB`
+
+> 项目描述：为了方便管理用户及单车定位管理等，将项目方后台从官网后台进行分离，建立独立的后台管理系统。提供项目方车辆管理、资产管理、配置管理和数据统计等功能，并将数据可视化。
+
+#### 项目职责：
+
+- 自定义表单组件用于登录注册表单页面
+- 根据用户登录后响应的权限类型，渲染用户后台可使用权限
+- 后台接口数据，通过Echarts图表实现数据可视化
+
+#### 技术要点：React全家桶, AntD, Echarts
+
+## 教育背景
+
+#### 2007.1 - 2009.6 新加坡
+
+> SIM 新加坡管理学院(Singapore Institute of Management)
+
+> 管理学专科(Diploma in Management Study)
+
+#### 背景补充
+
+如果文凭是我的劣势，那什么是我的绝对优势呢？我的最大优势是我的英文与读书结合的能力。我喜欢读英文书（非小说类型），且读的是纯英文书籍。我一个人读完的英文书可能比整个项目组其所有人读完的英文书都多（在菲2年大概已读完30本以上）。对于我喜欢的书籍，我会通过Amazon Audible（亚马逊音频书店）购买音频书，听书；我会在Fully Booked（菲律宾书店）购买实体书，看书；对于买不到的实体书，我会下载epub电子书资源，在Ipad或mac上进行阅读并做彩色笔记；最后再把电子笔记总结到我的前端文档项目，最后还必须记录我对新知识在生活中的应用。仅仅只是读书已经无法满足我了，我要听要看要写要记要用并改善我的人生，最后分享成功给我喜欢和欣赏的人。
