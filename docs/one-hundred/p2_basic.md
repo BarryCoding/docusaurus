@@ -5,7 +5,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 # 根基-基础知识
-- [前端知识体系-思维导图](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)
 
 :::danger 重点
 1. HTML CSS JS 基础知识
