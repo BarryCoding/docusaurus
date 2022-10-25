@@ -361,10 +361,6 @@ git branch -a
 
 ## Git Flow
 
-- todo video
-- todo thedo
-- todo noted
-
 ### Setup Mac
 
 ```bash

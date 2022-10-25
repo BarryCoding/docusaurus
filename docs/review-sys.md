@@ -19,6 +19,17 @@ import TabItem from '@theme/TabItem';
 :::
 
 ## 每日新进度
+
+:::danger Second
+<Tabs>
+<TabItem value="review" label="复习">
+
+- Oct 2022
+
+</TabItem>
+</Tabs>
+:::
+
 :::tip 2022年
 <Tabs>
 <TabItem value="mar" label="3月">

@@ -3,22 +3,30 @@ sidebar_position: 4
 ---
 
 # 异步基础
+:::info
+1. [同步与异步区别](#async)
+2. [前端异步使用场景](#application)
+3. 手写 Promise加载一张图片
+:::
 
 ## 同步与异步 {#async}
 - JS 是单线程语言 同时只能做一件事
-  - 异步不会阻塞代码执行 如 `setTimeout(fn,1000)`
+  - 异步不阻塞代码执行 如 `setTimeout(fn,1000)`
+    - 回调函数
   - 同步会阻塞代码执行 如 `alert(100)`
 
 ## 异步应用场景 {#application}
 1. 网络请求 如 ajax 图片加载
-2. 定时任务 如 setInterval
+2. 定时任务 如 setInterval / setTimeout
 
 ## Promise 基本使用
-:::danger callback hell
-函数内部层层嵌套其他函数逻辑 嵌套结构
+:::danger 历史原因
+- 回调地狱 函数内部层层嵌套其他函数逻辑
+- 嵌套地狱 if层层嵌套if
+  - check clean code？
 :::
-:::tip Promise
-函数之间如管道串联 链式结构
+:::tip 解决方案
+- Promise 函数之间如管道串联 链式结构
 :::
 ```js title='promise1.js'
 function getData(url){
@@ -46,11 +54,11 @@ getData(url1)
 1. [同步与异步区别](#async)
 2. [前端异步使用场景](#application)
 3. 手写 Promise加载一张图片
-```js title='load-img.js'
+```js
 function loadImg(src){
     return new Promise((resolve,reject)=>{
         const img = document.createElement('img')
-        // 图片事件处理
+        // 图片 加装成功 与 加装失败
         img.onload = ()=>{
             resolve(img)
         }

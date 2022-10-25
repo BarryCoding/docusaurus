@@ -57,7 +57,7 @@ const config = {
             label: '文档',
           },
           {to: '/blog', label: 'Blog', position: 'left'},
-          // todo？ 与 doc官网git图标一致 有原生的么？
+          // 与 doc官网git图标一致 有原生的么？
           // {
           //   href: 'https://github.com/BarryCoding',
           //   className: 'header-github-link',
