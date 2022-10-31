@@ -18,9 +18,10 @@ sidebar_position: 1
 └── postcss.config.js
 ```
 :::
-## 拆分配置 merge
-:::tip webpack4 配置文件夹
-- 项目脚本与依赖
+## 1 拆分配置 merge
+
+:::info 非webpack配置
+- 项目 脚本与依赖
 ```json title='package.json'
 {
   "scripts": {
@@ -38,14 +39,16 @@ sidebar_position: 1
   }
 }
 ```
-- 路径工具
+- 路径 辅助工具
 ```js title='paths.js'
 const path = require('path')
 const srcPath = path.join(__dirname, '..', 'src')
 const distPath = path.join(__dirname, '..', 'dist')
 module.exports = { srcPath, distPath }
 ```
-- webpack 环境公共配置 骨架
+:::
+:::tip webpack4 配置文件夹
+1. webpack 环境公共配置 骨架
 ```js title='webpack.common.js'
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -71,8 +74,9 @@ module.exports = {
     ]
 }
 ```
-- webpack 开发环境配置 骨架
-  - webpack-merge 工具
+2. webpack 开发环境配置 骨架
+   - webpack-merge 工具
+   - mode / ENV
 ```js title='webpack.dev.js'
 const path = require('path')
 const webpack = require('webpack')
@@ -94,7 +98,8 @@ module.exports = smart(webpackCommonConf, {
     ],
 })
 ```
-- webpakc 生产环境配置
+3. webpakc 生产环境配置
+   - mode / 文件hash / 清空打包 / ENV
 ```js title='webpack.prod.js'
 const path = require('path')
 const webpack = require('webpack')
@@ -125,9 +130,9 @@ module.exports = smart(webpackCommonConf, {
 ```
 :::
 
-## 启动本地服务
+## 2 启动本地服务
 :::info 开发环境配置
-- 关联 脚本和依赖
+- 关联 脚本和依赖 `npm run dev`
 ```json title='package.json'
 {
   "scripts": {
@@ -139,6 +144,7 @@ module.exports = smart(webpackCommonConf, {
 }
 ```
 - 修改 开发配置
+  - devServer 前后端联调 连测试环境 uat环境
 ```js title='webpack.dev.js'
 module.exports = smart(webpackCommonConf, {
     // 配置 webpack-dev-server
@@ -167,7 +173,7 @@ module.exports = smart(webpackCommonConf, {
 ```
 :::
 
-## 解析ES6
+## 3 解析ES6 JS
 :::tip 公共环境配置
 - 关联 依赖
 ```json title='package.json'
@@ -204,7 +210,7 @@ module.exports = {
 ```
 :::
 
-## 解析样式
+## 4 解析样式 CSS
 :::tip 公共环境配置
 - 关联 依赖
 ```json title='package.json'
@@ -228,6 +234,7 @@ module.exports = {
             {
                 test: /\.css$/,
                 // loader 的执行顺序是：从后往前
+                // postcss 处理浏览器兼容性 自动补充前缀
                 loader: ['style-loader', 'css-loader', 'postcss-loader']
             },
             // 解析less文件
@@ -248,7 +255,7 @@ module.exports = {
 ```
 :::
 
-## 解析图片 {#base64}
+## 5 解析图片 {#base64}
 :::info 开发环境配置
 - 关联 依赖
 ```json title='package.json'
@@ -294,7 +301,7 @@ module.exports = {
                 use: {
                     loader: 'url-loader',
                     options: {
-                        // 小于 5kb 的图片用 base64 格式产出
+                        // 小于 5kb 的图片用 base64 格式产出 减少图片请求
                         // 否则，依然延用 file-loader 的形式，产出 url 格式
                         limit: 5 * 1024,
 
