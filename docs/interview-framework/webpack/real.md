@@ -35,11 +35,14 @@ sidebar_position: 5
 :::tip
 - loader 模块转换器
   - [常见loader](https://webpack.js.org/loaders/)
-  - sass css babel url file
-  - 回顾时补充
+  - babel-loader Js新语法解析
+  - less-loader postcss-loader css-loader style-loader
+  - file-loader 处理图片引入 url-loader 小图Base64优化
 - plugin 扩张插件
   - [常见plugin](https://webpack.js.org/plugins/)
-  - 回顾时补充
+  - html-webpack-plugin 处理html模板
+  - webpack.DefinePlugin 定义变量 如 环境变量
+  - clean-webpack-plugin 打包清空 旧的打包文件
 :::
 
 ## 5 webpack 如何实现懒加载
