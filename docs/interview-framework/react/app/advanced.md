@@ -6,11 +6,18 @@ import TabItem from '@theme/TabItem';
 
 # 高级特性
 
-## 函数组件
-:::caution 特点
-- 纯函数 输入props 输出jsx
-- 无实例 无生命周期 无state
-- 不能扩展 其他方法
+## 1 函数组件
+:::info 特点
+- 纯函数 
+  - 输入props 
+  - 输出jsx
+- 无
+  - 实例 / class
+  - 生命周期 
+  - state
+- react hooks 
+  - useState state效果
+  - useEffect 生命周期效果
 :::
 
 :::tip 类组件与函数组件 对比
@@ -53,15 +60,17 @@ export default function ListFn(props) {
 </Tabs>
 :::
 
-## 非受控组件 与 ref {#ref}
-:::caution 特点
+## 2 非受控组件 与 ref {#ref}
+:::info 特点
 - `ref` 用于操作 DOM元素
-- `defaultValue` `defaultChecked`
-- 不使用 `setState`
+  - ref.current 获取值 
+- `defaultValue` `defaultChecked` 关联 state
+- 不使用 `setState` 与 事件函数
+- todo api
 :::
 :::danger 使用场景 必须使用DOM 因为setState无法实现
-- 文件上传 获取文件
-- 富文本编辑器 获取DOM元素
+1. 文件上传 获取文件
+2. 富文本编辑器 获取DOM元素
 :::
 :::tip
 ```jsx
@@ -101,13 +110,18 @@ export default class App extends React.Component {
 ```
 :::
 
-## Portals
-> 将组件渲染到父组件之外
-
+## 3 Portals 传送门
+:::info
+- 一般子组件都是向内嵌套渲染关系
+- 使用 Portal 将子组件 传送渲染到父组件之外
+- todo api
+:::
 :::danger 使用场景
-- 父组件 overflow:hidden
-- 父组件 z-index 太小
-- 改变组件定位的区间 position:fixed
+- 跳出父组件
+  - 父组件 overflow:hidden 子组件跟着隐藏
+  - 父组件 z-index 太小 子组件外层压盖
+- 需放在body第一层 
+  - position:fixed 跟随body节点 如 自定义modal
 :::
 
 :::tip 使用方式
@@ -147,7 +161,7 @@ export default class UsePortal extends React.Component {
     // 使用 Portals
     return ReactDOM.createPortal(
       <div className="modal">{this.props.children}</div>,
-      document.body // 渲染到 body 节点上
+      document.body // 渲染到 body 等任意节点
     );
   }
 }
@@ -173,16 +187,20 @@ export default class UsePortal extends React.Component {
 </Tabs>
 :::
 
-## context {#context}
-:::caution 上下文场景
-- 公共信息传递 如语言/主题色
-- props 过于繁琐
-- redux 小题大做 修改并不频繁 
+## 4 context {#context}
+:::danger 上下文场景
+- 修改不频繁的公共信息 如 国际化/主题 
+- props 太繁琐
+- redux 也可以  
+:::
+
+:::info api
+- todo
 :::
 
 :::tip 上下文应用
 <Tabs>
-  <TabItem value="mian" label="创建提供上下文">
+  <TabItem value="mian" label="创建与提供上下文">
 
 ```jsx title="ContextDemo.jsx" {2-3,11-15}
 import React from "react";
@@ -195,7 +213,7 @@ export default class App extends React.Component {
   }
   render() {
     return (
-      // 2 提供context 给其内部组件
+      // 2 提供context 传递给 内部组件 一般放在外层组件
       <ThemeContext.Provider value={this.state.theme}>
         <Toolbar />
         <button onClick={this.changeTheme}>change theme</button>
@@ -214,7 +232,7 @@ export default class App extends React.Component {
   <TabItem value="middle" label="过渡组件">
 
 ```js title="ContextDemo.jsx"
-// 不必再往下传递/提供上下文Provider。
+// 不必再往下传递/提供上下文 Provider。
 function Toolbar(props) {
   return (
     <div>
@@ -225,7 +243,7 @@ function Toolbar(props) {
 }
 ```
   </TabItem>
-  <TabItem value="class" label="类组件消费">
+  <TabItem value="class" label="消费上下文">
 
 ```js title="ContextDemo.jsx" {2,3,5}
 class ThemedButton extends React.Component {
@@ -257,11 +275,12 @@ function ThemeLink(props) {
 </Tabs>
 :::
 
-## 懒加载 异步组件 {#lazy}
-:::note 使用
-- import() 异步组件
+## 5 懒加载 异步组件 {#lazy}
+:::info 使用
+- import() 异步组件 **性能优化**
 - React.lazy() 懒加载
 - React.Suspense 包裹懒加载组件 加载效果
+  - fallback 处理 加装效果
 :::
 
 :::tip
@@ -286,7 +305,7 @@ export default class App extends React.Component {
       </div>
     );
     // 1. 强制刷新，可看到 loading （看不到就限制一下 chrome 网速）
-    // 2. 看 network 的 js 名称 时间 顺序
+    // 2. 看 network 的 新加装的js文件 名称 时间 顺序
   }
 }
 ```

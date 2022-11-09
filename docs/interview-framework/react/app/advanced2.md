@@ -6,15 +6,25 @@ import TabItem from '@theme/TabItem';
 
 # 高级特性2
 
-## 性能优化
+## 1 性能优化
+:::info
+- React 核心理念 不可变值
+- 优化1 SCU
+- 优化2 PureComponent memo
+- 优化3 使用 immutable.js 三方库处理不可变值
+:::
 
-### shouldComponentUpdate {#scu}
+### 1.1 shouldComponentUpdate {#scu}
 - [一般场景](./basic.md#props)
 
 :::info 总结
-- React默认 父组件更新 所有子组件也更新
-- SCU 默认返回 true
+- React 默认 **父组件更新 所有子组件也更新**
+- SCU 默认 返回 true
+  - `shouldComponentUpdate(nextProps, nextState){}`
+  - nextProps 对比 this.props 返回false 不渲染
+  - nextState 对比 this.state 返回false 不渲染
 - SCU 必须配合 immutable 理念
+  - 对象和数组 isEqual loadash
 - 根据需求和性能 再考虑SCU优化
 :::
 :::tip immutable 理念
@@ -122,11 +132,11 @@ List.propTypes = {
 </Tabs>
 :::
 
-### PureComponent memo {#pure}
+### 1.2 PureComponent memo {#pure}
 :::caution SCU浅比较
-- PureComponent 纯类组件 自动实现浅比较
-- memo 纯函数组件 自动实现浅比较
-- 浅比较已经适用于大部分情况 设计数据时应该
+- PureComponent `纯类组件` 自动实现 **浅比较** 
+- memo `纯函数组件` 自动实现 **浅比较**
+- 浅比较已经适用于大部分情况 设计数据时平坦化处理
 :::
 
 :::tip 浅比较应用
@@ -176,7 +186,7 @@ export default React.memo(ListFn, areEqual)
 </Tabs>
 :::
 
-### immutable.js
+### 1.3 immutable.js
 :::caution 特点
 - 彻底 不可变值
 - 基于共享数据（非深拷贝） 速度快
@@ -186,17 +196,17 @@ export default React.memo(ListFn, areEqual)
 ```js
 const map1 = Immutable.Map({a:1})
 const map2 = map1.set('a',2)
-map1.get('a')
-map2.get('a')
+map1.get('a') // 1
+map2.get('a') // 2
 ```
 :::
 
 ## 组件公共逻辑抽离 {#common}
 :::caution 
 - mixin 已被 React 废弃
-- HOC 
+- HOC 高阶组件
   - 模式简单 但增加了组件层级 可能覆盖props
-  - 作为父组件 外嵌
+  - 作为父组件 外嵌 可理解为外套大衣（公共数据和功能）
 - Render Props 
   - 代码简介 不会覆盖props
   - 作为子组件 内嵌
@@ -205,7 +215,11 @@ map2.get('a')
 ### 高阶组件 HOC
 :::info 特点
 - High Order Component
-- 工厂模式 装饰器
+- **工厂模式** 装饰器
+  - 原组件 为参数 
+  - 返回 扩展后的 新组件
+- props 穿透下去
+- redux 就是 HOC的应用
 :::
 :::tip 用法
 <Tabs>
@@ -213,13 +227,13 @@ map2.get('a')
 
 ```jsx
 import React from 'react'
-// 高阶组件是一种设计模式 工厂模式 返回一个组件/函数
-const HOCFactory = (LowComponent) => {
+// 高阶组件是一种设计模式 工厂模式 返回一个（数据和功能扩展后的）组件/函数
+const HOCFactory = (LowerComponent) => {
   return class HOC extends React.Component {
     // 公共逻辑处理
     render(){
       // 穿透传递 props 且 返回加工后的组件
-      return <LowComponent {...this.props} />
+      return <LowerComponent {...this.props} />
     }
   }
 }
@@ -234,8 +248,9 @@ const withMouse = (Component) => {
     return class withMouseComponent extends React.Component {
         constructor(props) {
             super(props)
-            this.state = { x: 0, y: 0 } // 鼠标 x轴y轴 坐标
+            this.state = { x: 0, y: 0 } // 新数据 鼠标 x轴y轴 坐标
         }
+        // 新功能 移动鼠标更新数据
         handleMouseMove = (event) => {
             this.setState({x: event.clientX, y: event.clientY})
         }
@@ -269,9 +284,11 @@ export default withMouse(App) // 返回加工后的组件
 :::
 
 ### render props
-:::caution
-- 层级 与HOC相反 
-- 作为子组件 并控制其渲染效果
+:::info
+- 层级 与HOC相反 可理解为内衣 对比 外套大衣
+- 作为子组件 
+  - 父组件 调用子组件时 传递 自定义render函数
+  - 子组件 调用父组件的 props.render
 :::
 :::tip 用法
 <Tabs>
@@ -342,4 +359,14 @@ export default const App = (props) => (
 ```
   </TabItem>
 </Tabs>
+:::
+
+:::danger 对比 HOC
+- HOC 
+  - 模式简单 增加组件层级（外层 套个大衣） 
+  - 组件 通过外层传递的 props 来扩展数据和功能
+- Render Props 
+  - 代码简洁（内层 穿个内衣） 
+  - 学习理解成本更高 多个render处理
+  - 组件 传递 render函数 给子组件
 :::

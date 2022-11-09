@@ -2,46 +2,46 @@
 sidebar_position: 9
 ---
 
-# 真题
+# 真题-20
 
-## React组件如何通讯
+## 1 React组件如何通讯
 - [父子组件](./app/basic.md#props) 
 - [context](./app/advanced.md#context)
 - [redux](./more.md#redux)
 
-## JSX本质
+## 2 JSX本质
 - [JSX本质章节](./principle.md#jsx)
 
-## context是什么 有何用途
+## 3 context是什么 有何用途
 - [context](./app/advanced.md#context)
 - 复杂公共数据 用redux管理
 
-## shouldComponetUpdate 用途
+## 4 shouldComponetUpdate 用途
 [性能优化](./app/advanced2.md#scu)
 
-## 描述 redux 单向数据流
+## 5 常见 描述 redux 单向数据流
 [redux](./more.md#redux)
 
-## setState是同步还是异步
+## 6 重点 setState是同步还是异步
 [跳转](./app/basic.md#setState) 
 
-## 什么是 纯函数
+## 7 什么是 纯函数
 - [纯函数](./principle.md#fn)
 
-## React 组件的生命周期
+## 8 React 组件的生命周期
 - todo 找图
 - [生命周期](./app/basic.md#lifecycle)
 - 注意componentShouldUpdate
 - [Vue回顾](../vue/app/components.md/#lifecycle)
 
-## React发起ajax 应在哪个生命周期
+## 9 React发起ajax 应在哪个生命周期
 - componentDidUpdate
 - [同Vue](../vue/real.md#ajax)
 
-## 渲染列表为何使用 key
+## 10 渲染列表为何使用 key
 - [同Vue](../vue/real.md#key)
 
-## 函数组件 类组件 区别
+## 11 函数组件 类组件 区别
 - 函数组件
   - 纯函数 输入props 返回jsx
   - 没实例 没生命(lifecycle) 没状态(state)
@@ -50,35 +50,35 @@ sidebar_position: 9
   - 有实力 有生命 有状态
   - 可扩展 有灵魂 能封装继承多态的大佬
 
-## 什么是受控组件
+## 12 什么是受控组件
 - 表单值 受state直接控制
 - 需要监听 onChange事件 `setState` 更新状态
 - [非受控组件](./app/advanced.md#ref)
 
-## 何时使用异步组件
+## 13 何时使用异步组件
 - [回顾懒加载](./app/advanced.md#lazy)
 - `import()` 语法
 - 加载大组件
 - 路由懒加载
 
-## 多组件公共逻辑 如何抽离
+## 14 多组件公共逻辑 如何抽离
 - [回顾](./app/advanced2.md#common)
 
-## redux 如何进行异步请求
+## 15 redux 如何进行异步请求
 - 使用异步action
 - redux-thunk / redux-saga 中间件
 
-## react-router 配置懒加载
+## 16 react-router 配置懒加载
 - [回顾路由懒加载](./more.md#router)
 
-## PureComponent 理解
+## 17 PureComponent 理解
 - 无需手写 SCU 自动性能优化
 - [回顾SCU性能优化](./app/advanced2.md#pure)
 
-## React事件 DOM事件 区别
+## 18 React事件 DOM事件 区别
 - [回顾SyntheticEvent](./principle.md#event)
 
-## React 性能优化
+## 19 React 性能优化
 1. 渲染列表 key值唯一 业务id
 2. 自定义事件 DOM事件 定时器 及时销毁 避免内存泄露
 3. 合理使用异步组件
@@ -89,7 +89,7 @@ sidebar_position: 9
 8. [前端通用优化](../../interview-basic/env-prod.md#performance)
 9. [webpack优化](../webpack/performance.md)
 
-## React 与 Vue 区别
+## 20 React 与 Vue 区别
 :::info 相同/类似
 - 组件化
 - 数据驱动视图

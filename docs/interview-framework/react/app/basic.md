@@ -6,7 +6,7 @@ import TabItem from '@theme/TabItem';
 
 # 基础语法
 
-## JSX语法 {#syntax}
+## 1 JSX语法 {#syntax}
 - [对比vue](../../vue/app/basic.md#syntax)
 ```jsx title='JSXBaseDemo.js'
 import React from "react";
@@ -22,7 +22,7 @@ class JSXBaseDemo extends React.Component {
     };
   }
   render() {
-    // 1 获取变量 插值用 {this.state.xx}
+    // 1 获取变量 插值 {this.state.xx}
     const pElem = <p>{this.state.name}</p>
 
     // 2 表达式 
@@ -35,16 +35,16 @@ class JSXBaseDemo extends React.Component {
         <img src={this.state.imgUrl}/>
     </div>
 
-    // 4 元素样式类名
+    // 4 标签样式类名 className
     const classElem = <p className="title">设置 css class</p>
 
-    // 5 行内样式
+    // 5 行内样式 字符串 | 样式对象
     const styleData = { fontSize: '30px',  color: 'blue' }
     const styleElem = <p style={styleData}>设置 style</p>
     // 内联写法，注意 {{ 和 }}
     const styleElem2 = <p style={{ fontSize: '30px',  color: 'blue' }}>设置 style</p>
 
-    // 6 修改原生 html
+    // 6 修改原生 html dangerouslySetInnerHTML
     const rawHtml = "<span>富文本内容<i>斜体</i><b>加粗</b></span>";
     const rawHtmlData = {
       __html: rawHtml, // 注意，必须是这种格式 {__html:'htmlstring'}
@@ -57,7 +57,7 @@ class JSXBaseDemo extends React.Component {
       </div>
     );
 
-    // 7 使用组件 <组件名>
+    // 7 使用组件 <XxxYyy> 首字母大写
     const componentElem = <div>
         <p>JSX 中加载一个组件</p>
         <hr/>
@@ -71,7 +71,10 @@ export default JSXBaseDemo;
 
 ```
 
-## 判断条件
+## 2 条件判断
+- 个人偏向于 `&&` 判断更直白
+- `if` 与 `3元` 都容易导致 嵌套地狱
+- 复杂逻辑就 抽出为函数 单独处理一处逻辑
 ```jsx title='ConditionDemo.js'
 import React from "react";
 
@@ -94,7 +97,7 @@ class ConditionDemo extends React.Component {
     // 2 三元运算符 一般用于jsx
     return <div>{ this.state.theme === 'black' ? blackBtn : whiteBtn }</div>
 
-    // 3 && 一般用于唯一判断
+    // 3 && 一般用于 唯一判断
     return <div>{this.state.theme === "black" && blackBtn}</div>;
   }
 }
@@ -102,8 +105,9 @@ class ConditionDemo extends React.Component {
 export default ConditionDemo;
 ```
 
-## 列表渲染
-- map 与 key
+## 3 列表渲染
+- List.map() v-for
+- key 必填
 ```jsx title='ListDemo.js'
 import React from "react";
 
@@ -121,7 +125,6 @@ class ListDemo extends React.Component {
   render() {
     return <ul>
       {
-        /* react 的 key 和 vue v-for key 类似，必填 */
         this.state.list.map((item, index) => 
         <li key={item.id}>index {index}; id {item.id}; title {item.title}</li>)
       }
@@ -132,10 +135,15 @@ class ListDemo extends React.Component {
 export default ListDemo;
 ```
 
-## 事件 {#event}
+## 4 事件 {#event}
 :::caution 注意
-- bind this
-- event参数 / 自定义参数
+- 事件函数 this 指向
+  - constructor fn.bind(this)
+    - 避免在事件触发处 fn.bind(this) 重复创建函数性能低 重复书写bind(this)
+  - **推荐** `fn=()=>{}` class组件箭头函数this自动绑定在实例上
+- 事件参数 
+  - 原生 event
+  - 自定义 todo 非bind形式？
 :::
 :::tip 事件绑定
 ```js
@@ -187,30 +195,29 @@ class EventDemo extends React.Component {
   clickHandler1() {
     this.setState({ name: "lisi",});
   }
-  // 1.2 静态方法，this 指向当前实例
+  // 1.2 静态方法，this 指向当前实例 个人偏好
   clickHandler2 = () => {
     this.setState({ name: "lisi",});
   };
   // 2.1 获取 event
   clickHandler3 = (event) => {
     event.preventDefault(); // 阻止默认行为
-    event.stopPropagation(); // 阻止冒泡
+    event.stopPropagation(); // 阻止冒泡行为
     console.log("target", event.target); // 指向当前元素，即当前元素触发
     console.log("current target", event.currentTarget); // 指向当前元素，假象！！！
 
-    // 注意，event 其实是 React 封装的。可以看 __proto__.constructor 是 SyntheticEvent 组合事件
+    // React 封装了事件 为 __proto__.constructor 的 SyntheticEvent 组合事件
     console.log("event", event); // 不是原生的 Event ，原生的 MouseEvent
     console.log("event.__proto__.constructor", event.__proto__.constructor);
 
-    // 原生 event 如下。其 __proto__.constructor 是 MouseEvent
+    // 原生事件 其 __proto__.constructor 是 MouseEvent
     console.log("nativeEvent", event.nativeEvent);
     console.log("nativeEvent target", event.nativeEvent.target); // 指向当前元素，即当前元素触发
     console.log("nativeEvent current target", event.nativeEvent.currentTarget); // 指向 document ！！！
 
-    // 1. event 是 SyntheticEvent ，模拟出来 DOM 事件所有能力
-    // 2. event.nativeEvent 是原生事件对象
-    // 3. 所有的事件，都被挂载到 document 上 进行事件代理
-    // 4. 和 DOM 事件不一样，和 Vue 事件也不一样
+    // 1. event SyntheticEvent ，模拟 DOM 事件所有能力
+    // 2. event.nativeEvent 原生事件对象
+    // 3. 所有的事件，都被挂载到 document 上 进行事件代理 提升性能
   };
   // 2.2 传递自定义参数
   clickHandler4(id, title, event) {
@@ -224,18 +231,18 @@ export default EventDemo;
 :::
 
 :::danger React17
-- React 16 事件绑定到 document
-- React 17 事件绑定到 root节点
+- React 16 事件绑定到 原生的html标签 只能绑定一处
+- React 17 事件绑定到 自定义root标签 可以绑定多处
   - 便于多个React版本并存 如微前段
 
 ![difference](/img/react/react_17_event_delegation.png)
 :::
 
-## 表单
+## 5 表单 受控组件
 :::caution 注意
-- 受控组件
-- input textarea select 用 value
-- checkbox radio 用 checked
+- 受控组件 受state控制
+- input textarea select 控制 value
+- checkbox radio 控制 checked
 :::
 :::tip form
 ```js
@@ -259,11 +266,11 @@ class FormDemo extends React.Component {
       <label htmlFor="inputName">姓名：</label> {/* 用 htmlFor 代替 for */}
       <input id="inputName" value={this.state.name} onChange={this.onInputChange}/>
 
-      {/* textarea - 使用 value */}
+      {/* textarea - value */}
       <textarea value={this.state.info} onChange={this.onTextareaChange} />
       <p>{this.state.info}</p>
 
-      {/* select - 使用 value */}
+      {/* select - value */}
       <select value={this.state.city} onChange={this.onSelectChange}>
         <option value="beijing">北京</option>
         <option value="shanghai">上海</option>
@@ -271,32 +278,33 @@ class FormDemo extends React.Component {
       </select>
       <p>{this.state.city}</p>
 
-    {/* checkbox - 使用 checked */}
+    {/* checkbox - checked */}
       <input type="checkbox" checked={this.state.flag} onChange={this.onCheckboxChange}/>
       <p>{this.state.flag.toString()}</p>
 
-    {/* radio - 使用 checked */}
+    {/* radio - checked */}
         male <input type="radio" name="gender" value="male" checked={this.state.gender === 'male'} onChange={this.onRadioChange}/>
         female <input type="radio" name="gender" value="female" checked={this.state.gender === 'female'} onChange={this.onRadioChange}/>
         <p>{this.state.gender}</p>
     </div>
   }
-  onInputChange = (e) => {this.setState({ name: e.target.value, });};
-  onTextareaChange = (e) => {this.setState({ info: e.target.value, });};
-  onSelectChange = (e) => { this.setState({ city: e.target.value, });};
-  onCheckboxChange = () => { this.setState({ flag: !this.state.flag, });};
-  onRadioChange = (e) => {this.setState({ gender: e.target.value, });};
+  onInputChange = (e) => {this.setState({ name: e.target.value, })}
+  onTextareaChange = (e) => {this.setState({ info: e.target.value, })}
+  onSelectChange = (e) => { this.setState({ city: e.target.value, })}
+  onCheckboxChange = () => { this.setState({ flag: !this.state.flag, })}
+  onRadioChange = (e) => {this.setState({ gender: e.target.value, })}
 }
 
 export default FormDemo;
 ```
 :::
 
-## 组件和props {#props}
+## 6 父子组件 直接通讯 {#props}
 :::caution 注意
-- props 传递数据
-- props 传递函数
-- props 类型检查 prop-types
+- props 传递 状态
+- props 传递 函数
+- props 类型检查 prop-types | TS
+- 传递的状态 与 控制此状态的函数 都放在父组件
 :::
 
 :::tip 父子组件通讯
@@ -309,7 +317,8 @@ import PropTypes from "prop-types"; // 安装类型检查
 export default class TodoListDemo extends React.Component {
   constructor(props) {
     super(props);
-    // 状态（数据）提升 数据和控制数据的函数都放在父组件
+    // 状态（数据）提升到 父组件
+    // 传递状态 放在父组件
     this.state = {
       list: [
         {id: "id-1",title: "标题1",},
@@ -318,6 +327,10 @@ export default class TodoListDemo extends React.Component {
       footerInfo: "底部文字",
     };
   }
+  // 控制传递状态的函数 也放在父组件
+  onSubmitTitle = (title) => {
+    this.setState({list: this.state.list.concat({id: `id-${Date.now()}`,title,}),});
+  };
   render() {
     return (
       <div>
@@ -327,9 +340,6 @@ export default class TodoListDemo extends React.Component {
       </div>
     );
   }
-  onSubmitTitle = (title) => {
-    this.setState({list: this.state.list.concat({id: `id-${Date.now()}`,title,}),});
-  };
 }
 ```
   </TabItem>
@@ -413,84 +423,10 @@ class Footer extends React.Component {
 </Tabs>
 :::
 
-## state / setState 最重要 {#setState}
-:::caution
-1. state 定义在 constructor中
-2. 原状态不可修改 immutable
-3. setState 上下文 异步/同步
-4. setState 状态 合并/不合并
-:::
-:::tip setState
+## 7 必会 4重点 state / setState {#setState}
+:::caution 1 状态不可变 数组与对象
 ```js
-import React from "react";
-
-class StateDemo extends React.Component {
-  constructor(props) {
-    super(props);
-    // 1 state 要在构造函数中定义
-    this.state = {count: 0,};
-  }
-  render() {
-    return (
-      <div>
-        <p>{this.state.count}</p> <button onClick={this.increase}>累加</button>
-      </div>
-    );
-  }
-  increase = () => {
-    // 2 不要直接修改 state ，遵循不可变值 ----------------------------
-    // this.state.count++ // 错误
-    this.setState({count: this.state.count + 1})
-
-    // 3 setState 异步/同步 ----------------------------
-
-    this.setState({count: this.state.count + 1}, () => {
-      // 对比 Vue $nextTick - DOM
-      console.log('count by callback', this.state.count) // 回调函数中可以拿到最新的 state
-    })
-    console.log('count', this.state.count) // 异步的，拿不到最新值
-
-    // setTimeout 中 setState 是同步的
-    setTimeout(() => {
-      this.setState({count: this.state.count + 1})
-      console.log('count in setTimeout', this.state.count)
-    }, 0)
-
-    // 自己定义的 DOM 事件，setState 是同步的。再 componentDidMount 中
-
-    // 4 state 合并/不合并 setState的参数 ----------------------------
-
-    // 传入对象，会被合并/覆盖（类似 Object.assign ）。执行结果只一次 +1
-    this.setState({count: this.state.count + 1})
-    this.setState({count: this.state.count + 1})
-    this.setState({count: this.state.count + 1})
-
-    // 传入函数，不会被合并/覆盖 执行结果是 +3
-    this.setState((prevState, props) => ({count: prevState.count + 1}));
-    this.setState((prevState, props) => ({count: prevState.count + 1}));
-    this.setState((prevState, props) => ({count: prevState.count + 1}));
-  };
-
-  bodyClickHandler = () => {
-      this.setState({count: this.state.count + 1})
-      console.log('count in body event', this.state.count)
-  }
-  componentDidMount() {
-      // 3 自己定义的 DOM 事件，setState 是同步的
-      document.body.addEventListener('click', this.bodyClickHandler)
-  }
-  componentWillUnmount() {
-      // 3 及时销毁自定义 DOM 事件
-      document.body.removeEventListener('click', this.bodyClickHandler)
-      // 3 clearTimeout 销毁定时器
-  }
-}
-
-export default StateDemo;
-
-// -------------------------- 请用es6 扩展运算符 -----------------------------
-
-// 不可变值（函数式编程，纯函数） - 数组
+// 不可变值 - 数组 （函数式编程，纯函数）
 const list5Copy = this.state.list5.slice()
 list5Copy.splice(2, 0, 'a') // 中间插入/删除
 this.setState({
@@ -512,10 +448,103 @@ this.setState({
 ```
 :::
 
-## 组件生命周期 {#lifecycle}
+:::danger 2 状态可能异步更新
+```js
+import React from "react";
+
+class StateDemo extends React.Component {
+  constructor(props) {
+    super(props);
+    // 1 state 要在构造函数中定义
+    this.state = {count: 0,};
+  }
+  render() {
+    return (
+      <div>
+        <p>{this.state.count}</p> <button onClick={this.increase}>累加</button>
+      </div>
+    );
+  }
+  increase = () => {
+    // 2 不要直接操作 state ，遵循不可变值
+    // this.state.count++ // 错误
+    // 使用 setState 修改状态
+    this.setState({count: this.state.count + 1})
+
+    // 3 setState 异步/同步 
+    // 3.1 一般的 setState({xxx:yyy}) 是异步
+    this.setState({count: this.state.count + 1}, () => {
+      // setState 内部回调函数 可以拿到最新state  如 Vue $nextTick
+      console.log('count by callback', this.state.count) 
+    })
+    // 一般的 setState 是异步 拿不到最新状态
+    console.log('count', this.state.count)
+
+    // 3.2 setTimeout 中 setState 是同步的 记得销毁定时器
+    setTimeout(() => {
+      this.setState({count: this.state.count + 1})
+      console.log('count in setTimeout', this.state.count)
+    }, 0)
+  };
+
+  bodyClickHandler = () => {
+    this.setState({count: this.state.count + 1})
+    console.log('count in body event', this.state.count)
+  }
+  componentDidMount() {
+    // 3.3 自定义 DOM 事件，setState 是同步的
+    document.body.addEventListener('click', this.bodyClickHandler)
+  }
+  componentWillUnmount() {
+    // 3.2 clearTimeout 销毁定时器
+    // 3.3 及时销毁 自定义 DOM 事件
+    document.body.removeEventListener('click', this.bodyClickHandler)
+  }
+}
+
+export default StateDemo;
+```
+:::
+
+:::caution 3 状态可能合并更新
+```js title='简单写法'
+// setState 传入对象 会被压盖。只执行最后一次更新 count结果为3
+this.setState({count: this.state.count + 1})
+this.setState({count: this.state.count + 2})
+this.setState({count: this.state.count + 3})
+```
+```js title='规范推荐写法'
+// setState 传入箭头函数来返回对象 不被合并 按函数顺序执行 count结果为6
+this.setState((prevState, props) => ({count: prevState.count + 1}));
+this.setState((prevState, props) => ({count: prevState.count + 2}));
+this.setState((prevState, props) => ({count: prevState.count + 3}));
+```
+:::
+
+:::info 4 18版本状态更新
+- React <= 17
+  - 状态 一般为 异步更新 合并更新
+  - 自定义事件 setTimeout 状态 同步更新 不合并更新
+  - 不统一 React只处理了组件事件
+- React 18
+  - automatic batching 自动批量处理
+  - 状态 异步更新 合并更新
+  - 保持统一性 降低了复杂度
+:::
+
+## 8 组件生命周期 {#lifecycle}
+- 回顾 父子组件生命周期 同 Vue生命周期
 - constructor
+  - 默认状态等 准备好
 - render
+  - 首次渲染 默认状态的 默认静态页面 （非接口数据） 
+  - 状态改变后 重新渲染 动态页面
 - componentDidMount
+  - DOM已挂载后触发 掉接口数据后的 动态页面
 - shouldComponentUpdate
+  - 组件是否需要更新 优化组件性能
 - componentDidUpdate
+  - DOM已更新后触发 注意改状态导致死的循环
 - componentWillUnmount
+  - 组件销毁前的清理 如 定时器 和 自定义事件
+- [图解](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)
