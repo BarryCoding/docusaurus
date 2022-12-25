@@ -61,7 +61,7 @@ function isEqual(obj1, obj2){
 ```
 
 ## 3 数组map
-::: info
+:::info
 - 数组 slice splice 区别
   - slice 剪切 纯函数
   - splice 剪辑 非纯函数

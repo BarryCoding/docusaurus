@@ -42,8 +42,9 @@ sidebar_position: 1
   - margin-right  右方元素左移
 
 ### BFC 理解与应用
-- Block Format Context 块级格式化上下文
-- 一块独立渲染区域 内部元素渲染 不影响外界元素
+> Block Format Context 块级格式化上下文
+
+- **一块独立渲染区域 内部元素渲染 不影响外界元素**
 - 常见形成条件
    1. float 非 none
    2. overflow 非 visible

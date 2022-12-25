@@ -544,7 +544,7 @@ this.setState((prevState, props) => ({count: prevState.count + 3}));
 - shouldComponentUpdate
   - 组件是否需要更新 优化组件性能
 - componentDidUpdate
-  - DOM已更新后触发 注意改状态导致死的循环
+  - state更新后触发 注意改状态导致死的循环
 - componentWillUnmount
   - 组件销毁前的清理 如 定时器 和 自定义事件
 - [图解](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)

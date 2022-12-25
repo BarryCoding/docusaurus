@@ -7,6 +7,7 @@ sidebar_position: 2
 1. 补充入口js文件
 2. 补充模板html文件
 3. 产出文件与入口文件关联
+
 :::note 
 ```diff title='项目结构'
     ├── src

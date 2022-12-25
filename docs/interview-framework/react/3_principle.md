@@ -107,6 +107,7 @@ React.createElement(List, null, child1, child2, '文本节点')
 
 ## 5 重点 setState / batchUpdate
 - [回顾setState](./app/basic.md#setState)
+
 :::info setState
 - setState 是否异步
   - 可能异步（普通使用）
